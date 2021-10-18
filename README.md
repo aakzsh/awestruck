@@ -1,3 +1,0 @@
-# SnapStroll
-
-description here
