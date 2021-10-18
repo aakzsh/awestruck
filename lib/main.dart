@@ -1,3 +1,4 @@
+import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,6 +15,9 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp();
+    return MaterialApp(
+      title: "Awestruck",
+      home: Decide(),
+    );
   }
 }
