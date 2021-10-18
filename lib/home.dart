@@ -2,7 +2,7 @@ import 'package:awestruck/auth/login.dart';
 import 'package:flutter/material.dart';
 
 class Decide extends StatefulWidget {
-  const Decide({Key? key}) : super(key: key);
+  // const Decide({Key? key}) : super(key: key);
 
   @override
   _DecideState createState() => _DecideState();
@@ -21,7 +21,7 @@ class _DecideState extends State<Decide> {
 }
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  // const Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();

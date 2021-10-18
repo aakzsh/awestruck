@@ -6,8 +6,6 @@ void main() {
 }
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
-
   @override
   _AppState createState() => _AppState();
 }
