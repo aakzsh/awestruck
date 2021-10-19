@@ -217,14 +217,14 @@ class _MeditationState extends State<Meditation> {
               SizedBox(
                 height: 20,
               ),
-              MaterialButton(
-                  child: Text(
-                    "go to star home",
-                  ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => StarRoom()));
-                  })
+              // MaterialButton(
+              //     child: Text(
+              //       "go to star home",
+              //     ),
+              //     onPressed: () {
+              //       Navigator.push(context,
+              //           MaterialPageRoute(builder: (context) => StarRoom()));
+              //     })
             ],
           ),
         )),

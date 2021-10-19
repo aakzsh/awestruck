@@ -22,23 +22,23 @@ class _StarRoomState extends State<StarRoom> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text("StarGaze",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        )),
-                    CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 20,
-                    )
-                  ],
+                Padding(
+                  padding: EdgeInsets.only(top: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("StarGaze",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                          )),
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 20,
+                      )
+                    ],
+                  ),
                 ),
                 Container(
                   height: 200,
@@ -71,22 +71,32 @@ class _StarRoomState extends State<StarRoom> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
                   children: <Widget>[
-                    Text("Watch",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )),
-                    Text(" the stars ",
-                        style: TextStyle(
-                          color: Color.fromRGBO(205, 143, 170, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )),
-                    Text("along",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Watch",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            )),
+                        Text(" the stars ",
+                            style: TextStyle(
+                              color: Color.fromRGBO(205, 143, 170, 1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            )),
+                        Text("along",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            )),
+                      ],
+                    ),
+                    Text("with your favorite people",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -94,12 +104,6 @@ class _StarRoomState extends State<StarRoom> {
                         )),
                   ],
                 ),
-                Text("with your favorite people",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    )),
                 SizedBox(
                   height: 20,
                 ),
@@ -131,6 +135,9 @@ class _StarRoomState extends State<StarRoom> {
                       ),
                       trailing: Icon(Icons.arrow_forward_ios),
                     )),
+                SizedBox(
+                  height: 5,
+                )
               ],
             ),
           )),
