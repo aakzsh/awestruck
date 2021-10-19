@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   imageview360:
   google_fonts:
+  particles_flutter: ^0.1.4
 
 dev_dependencies:
   flutter_test:
