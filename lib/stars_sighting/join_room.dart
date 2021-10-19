@@ -1,15 +1,13 @@
 import 'package:awestruck/constant_widgets/palette.dart';
-import 'package:awestruck/stars_sighting/create_room.dart';
-import 'package:awestruck/stars_sighting/join_room.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
 
-class StarRoom extends StatefulWidget {
+class JoinRoom extends StatefulWidget {
   @override
-  _StarRoomState createState() => _StarRoomState();
+  _JoinRoomState createState() => _JoinRoomState();
 }
 
-class _StarRoomState extends State<StarRoom> {
+class _JoinRoomState extends State<JoinRoom> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -29,7 +27,7 @@ class _StarRoomState extends State<StarRoom> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("StarGaze",
+                      Text("Join Room",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -73,78 +71,46 @@ class _StarRoomState extends State<StarRoom> {
                     ),
                   ),
                 ),
-                Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Watch",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            )),
-                        Text(" the stars ",
-                            style: TextStyle(
-                              color: Color.fromRGBO(205, 143, 170, 1),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            )),
-                        Text("along",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            )),
-                      ],
-                    ),
-                    Text("with your favorite people",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )),
-                  ],
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text("Enter Room ID",
+                      style: TextStyle(
+                        color: Colors.white54,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                      )),
                 ),
-                SizedBox(
-                  height: 20,
+                Container(
+                  color: Color.fromRGBO(21, 29, 49, 1).withOpacity(0.9),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                          width: w - 90,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none, hintText: ""),
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
                 MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     color: Color.fromRGBO(3, 202, 164, 1),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreateRoom()));
-                    },
+                    onPressed: () {},
                     child: ListTile(
-                      title: Text(
-                        "Create a New Room",
+                        title: Center(
+                      child: Text(
+                        "Join Room",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color: Palette().bluebg),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    )),
-                MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    color: Colors.blue.withOpacity(0.2),
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => JoinRoom()));
-                    },
-                    child: ListTile(
-                      title: Text(
-                        "Join an Existing Room",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Color.fromRGBO(3, 202, 164, 1)),
-                      ),
-                      trailing: Icon(Icons.arrow_forward_ios),
-                    )),
+                    ))),
                 SizedBox(
                   height: 5,
                 )
