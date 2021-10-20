@@ -31,6 +31,7 @@ dependencies:
   imageview360:
   google_fonts:
   particles_flutter: ^0.1.4
+  panorama: ^0.4.1
 
 dev_dependencies:
   flutter_test:

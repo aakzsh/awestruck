@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:awestruck/meditation/meditation_home.dart';
 import 'package:flutter/material.dart';
 
@@ -37,3 +39,11 @@ class _LoginState extends State<Login> {
     ));
   }
 }
+
+bool _isSnackOpen = false;
+GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
+String _platformVersion = 'Unknown';
+
+// ............................
