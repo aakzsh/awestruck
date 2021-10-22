@@ -32,6 +32,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
+    double fh = 0.3 * h;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -41,28 +42,34 @@ class _HomeState extends State<Home> {
         width: w,
         height: h,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             SizedBox(
               width: w - 90,
               child: Container(
-                child: Text(
-                  "Good Morning",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 48, 0, 0),
+                  child: Text(
+                    "Good Morning",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32),
+                  ),
                 ),
               ),
             ),
             Column(
               children: [
                 SizedBox(
+                  height: fh,
+                ),
+                SizedBox(
                   child: Container(
                     width: w - 90,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                       child: Text(
                         "Today's Stats",
                         textAlign: TextAlign.left,
@@ -130,6 +137,9 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 2,
             )
           ],
         ),
