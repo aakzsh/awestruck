@@ -215,7 +215,7 @@ class _MeditationState extends State<Meditation> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 80,
               ),
               // MaterialButton(
               //     child: Text(
