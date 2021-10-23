@@ -1,3 +1,5 @@
+import 'package:awestruck/constant_widgets/bottom_nav.dart';
+
 import 'home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +28,7 @@ class _AppState extends State<App> {
         ),
       ),
       title: "Awestruck",
-      home: Decide(),
+      home: BottomNav(),
     );
   }
 }
