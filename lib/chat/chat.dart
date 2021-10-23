@@ -1,17 +1,17 @@
 import 'package:awestruck/auth/login.dart';
 import 'package:flutter/material.dart';
 
-class WalkHome extends StatefulWidget {
+class Chat extends StatefulWidget {
   @override
-  _WalkHomeState createState() => _WalkHomeState();
+  _ChatState createState() => _ChatState();
 }
 
-class _WalkHomeState extends State<WalkHome> {
+class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('walk'),
+        title: Text('chat'),
       ),
     );
   }

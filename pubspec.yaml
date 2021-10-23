@@ -32,6 +32,8 @@ dependencies:
   google_fonts:
   particles_flutter: 
   panorama: 
+  persistent_bottom_nav_bar: ^4.0.2
+  eva_icons_flutter: ^3.0.2
 
 dev_dependencies:
   flutter_test:
