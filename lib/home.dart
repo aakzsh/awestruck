@@ -9,7 +9,7 @@ class Decide extends StatefulWidget {
 }
 
 class _DecideState extends State<Decide> {
-  bool isLogged = true;
+  bool isLogged = false;
   @override
   Widget build(BuildContext context) {
     if (isLogged) {

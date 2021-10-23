@@ -32,6 +32,9 @@ dependencies:
   google_fonts:
   particles_flutter: ^0.1.4
   panorama: ^0.4.1
+  cloud_firestore:
+  firebase_core:
+  firebase_auth:
 
 dev_dependencies:
   flutter_test:
