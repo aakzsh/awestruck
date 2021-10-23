@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:awestruck/auth/signup.dart';
+import 'package:awestruck/constant_widgets/bottom_nav.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/home.dart';
 import 'package:awestruck/meditation/meditation_home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -13,6 +16,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String _email, _pass;
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -41,6 +45,9 @@ class _LoginState extends State<Login> {
                 20,
               ),
               child: TextField(
+                onChanged: (val1) {
+                  _email = val1;
+                },
                 decoration: InputDecoration.collapsed(hintText: ""),
               ),
             ),
@@ -60,6 +67,9 @@ class _LoginState extends State<Login> {
                 20,
               ),
               child: TextField(
+                onChanged: (val2) {
+                  _pass = val2;
+                },
                 obscureText: true,
                 decoration: InputDecoration.collapsed(hintText: ""),
               ),
@@ -71,9 +81,33 @@ class _LoginState extends State<Login> {
           SizedBox(height: 40),
           MaterialButton(
               minWidth: w - 40,
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Meditation()));
+              onPressed: () async {
+                await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(email: _email, password: _pass)
+                    .then((result) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => BottomNav()),
+                  );
+                }).catchError((err) {
+                  print(err.message);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Error"),
+                          content: Text(err.message),
+                          actions: [
+                            TextButton(
+                              child: Text("okay"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                });
               },
               child: Text(
                 "Log In",

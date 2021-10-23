@@ -1,4 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
 
@@ -33,9 +34,17 @@ class _JoinRoomState extends State<JoinRoom> {
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
                           )),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
+                      InkWell(
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()));
+                        },
                       )
                     ],
                   ),

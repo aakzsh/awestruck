@@ -1,4 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/profile/profile.dart';
 // import 'package:awestruck/stars_sighting/byte_image.dart';
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
@@ -47,9 +48,17 @@ class _GazeState extends State<Gaze> {
                                   fontWeight: FontWeight.normal,
                                   fontSize: 20,
                                 )),
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 20,
+                            InkWell(
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 20,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Profile()));
+                              },
                             )
                           ],
                         ),

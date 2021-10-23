@@ -1,4 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/create_room.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
 import 'package:flutter/material.dart';
@@ -35,9 +36,17 @@ class _StarRoomState extends State<StarRoom> {
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
                           )),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 20,
+                      InkWell(
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 20,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Profile()));
+                        },
                       )
                     ],
                   ),

@@ -1,4 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/star_home.dart';
 import 'package:flutter/material.dart';
 
@@ -34,9 +35,15 @@ class _MeditationState extends State<Meditation> {
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       )),
-                  CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 20,
+                  InkWell(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      radius: 20,
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()));
+                    },
                   )
                 ],
               ),
