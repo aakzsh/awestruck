@@ -38,6 +38,7 @@ dependencies:
   persistent_bottom_nav_bar: 
   eva_icons_flutter: 
   percent_indicator: 
+  pedometer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
