@@ -1,5 +1,7 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/create_room.dart';
+import 'package:awestruck/stars_sighting/gaze.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
@@ -41,9 +43,17 @@ class _CreateRoomState extends State<CreateRoom> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25,
                                     )),
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 20,
+                                InkWell(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 20,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Profile()));
+                                  },
                                 )
                               ],
                             ),
@@ -188,7 +198,7 @@ class _CreateRoomState extends State<CreateRoom> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => CreateRoom()));
+                                    builder: (context) => Gaze()));
                           },
                           child: ListTile(
                               title: Center(
@@ -200,7 +210,7 @@ class _CreateRoomState extends State<CreateRoom> {
                             ),
                           ))),
                       SizedBox(
-                        height: 5,
+                        height: 100,
                       )
                     ],
                   )
