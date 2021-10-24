@@ -155,11 +155,7 @@ class _StarRoomState extends State<StarRoom> {
                       trailing: Icon(Icons.arrow_forward_ios),
                     )),
                 SizedBox(
-<<<<<<< HEAD
-                  height: 70,
-=======
                   height: 100,
->>>>>>> 26b53ce4080493431a602b8408374179dc7e2c13
                 )
               ],
             ),
