@@ -34,6 +34,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
         backgroundColor: Palette().bluebg,
         body: Container(

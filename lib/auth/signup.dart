@@ -21,7 +21,7 @@ class _SignupState extends State<Signup> {
       height: double.infinity,
       width: double.infinity,
       color: Color.fromRGBO(2, 10, 29, 1),
-      child: Column(
+      child: SingleChildScrollView(child: Column(
         children: <Widget>[
           Padding(
               padding: EdgeInsets.all(30),
@@ -199,9 +199,10 @@ class _SignupState extends State<Signup> {
                 "Already have an account yet? Log In",
                 style: TextStyle(color: Colors.blueGrey),
               )),
-          Text(err)
+          Text(err),
+          SizedBox(height: 40)
         ],
-      ),
+      ),)
     ));
   }
 }
