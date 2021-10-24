@@ -79,6 +79,14 @@ class _WalkHomeState extends State<WalkHome> {
                       decoration: BoxDecoration(
                           color: Color(0xff151D31),
                           borderRadius: BorderRadius.circular(10)),
+                      child: Column(
+                        children: [
+                          Text(
+                            "Goals",
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
