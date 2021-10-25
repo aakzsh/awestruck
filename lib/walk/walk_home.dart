@@ -1,4 +1,3 @@
-import 'package:awestruck/auth/login.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -55,7 +54,6 @@ class _WalkHomeState extends State<WalkHome> {
     _pedestrianStatusStream
         .listen(onPedestrianStatusChanged)
         .onError(onPedestrianStatusError);
-
     _stepCountStream = Pedometer.stepCountStream;
     _stepCountStream.listen(onStepCount).onError(onStepCountError);
 
@@ -65,7 +63,7 @@ class _WalkHomeState extends State<WalkHome> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double cont_w = (w - 40) / 3 - 15;
+    // double cont_w = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
           height: double.infinity,

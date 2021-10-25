@@ -1,9 +1,12 @@
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
-import 'package:awestruck/stars_sighting/create_room.dart';
 import 'package:awestruck/stars_sighting/gaze.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:particles_flutter/particles_flutter.dart';
 
 class CreateRoom extends StatefulWidget {
@@ -11,12 +14,51 @@ class CreateRoom extends StatefulWidget {
   _CreateRoomState createState() => _CreateRoomState();
 }
 
+// String _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 class _CreateRoomState extends State<CreateRoom> {
+  CreateRoom cr;
+  String name = "", status = "", username = "";
+  var r = Random();
+
+  getData(code) {
+    FirebaseFirestore.instance
+        .collection('userids')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((value) => {
+              setState(() {
+                username = value.data()['username'];
+              }),
+              FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(value.data()['username'])
+                  .get()
+                  .then((value) => {
+                        setState(() {
+                          name = value.data()['name'];
+                          status = value.data()['status'];
+                        })
+                      })
+                  .then((value) => {
+                        FirebaseFirestore.instance
+                            .collection("room")
+                            .doc(code)
+                            .set({
+                          'participants': [
+                            {'name': name, 'status': status}
+                          ],
+                        })
+                      })
+            });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // getData(code);
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-    double cont_w = (w - 40) / 3 - 15;
+    // double cont_w = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
           height: double.infinity,
@@ -109,7 +151,7 @@ class _CreateRoomState extends State<CreateRoom> {
                                   child: Padding(
                                       padding: EdgeInsets.only(left: 30),
                                       child: Text(
-                                        "fmlfml",
+                                        UniversalCode,
                                         style: TextStyle(
                                             fontSize: 25,
                                             color: Colors.white54),
@@ -117,7 +159,10 @@ class _CreateRoomState extends State<CreateRoom> {
                                   width: w - 90,
                                 ),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Clipboard.setData(
+                                          ClipboardData(text: UniversalCode));
+                                    },
                                     icon: Icon(
                                       Icons.copy,
                                       color: Palette().auroraGreen,
@@ -127,62 +172,13 @@ class _CreateRoomState extends State<CreateRoom> {
                           ),
                           SizedBox(height: 20),
                           Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "People in the room",
-                                style: TextStyle(color: Colors.white54),
-                              )),
-                          ListTile(
-                            title: Text("Alicia Jones"),
-                            subtitle: Text(
-                              "life's weird",
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "People in the room",
                               style: TextStyle(color: Colors.white54),
-                            ),
-                            trailing: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.redAccent,
-                                )),
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.white,
                             ),
                           ),
-                          ListTile(
-                            title: Text("frooti //"),
-                            subtitle: Text(
-                              ":immacatdoge:",
-                              style: TextStyle(color: Colors.white54),
-                            ),
-                            trailing: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.redAccent,
-                                )),
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.white,
-                            ),
-                          ),
-                          ListTile(
-                            title: Text("aakash //"),
-                            subtitle: Text(
-                              ":samosa:",
-                              style: TextStyle(color: Colors.white54),
-                            ),
-                            trailing: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.redAccent,
-                                )),
-                            leading: CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.white,
-                            ),
-                          )
+                          Container(child: ParticipantList('name', 'status')),
                         ],
                       ),
                     ),
@@ -218,4 +214,26 @@ class _CreateRoomState extends State<CreateRoom> {
               ))),
     );
   }
+}
+
+ParticipantList(name, status) {
+  return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20),
+      child: ListTile(
+        title: Text(name),
+        subtitle: Text(
+          status,
+          style: TextStyle(color: Colors.white54),
+        ),
+        trailing: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.remove_circle,
+              color: Colors.redAccent,
+            )),
+        leading: CircleAvatar(
+          radius: 20,
+          backgroundColor: Colors.white,
+        ),
+      ));
 }

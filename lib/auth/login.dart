@@ -1,10 +1,5 @@
-import 'dart:async';
-
 import 'package:awestruck/auth/signup.dart';
 import 'package:awestruck/constant_widgets/bottom_nav.dart';
-import 'package:awestruck/constant_widgets/palette.dart';
-import 'package:awestruck/home.dart';
-import 'package:awestruck/meditation/meditation_home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

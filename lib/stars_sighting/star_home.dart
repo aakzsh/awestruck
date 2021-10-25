@@ -2,19 +2,24 @@ import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/create_room.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
+import 'dart:math';
 
 class StarRoom extends StatefulWidget {
   @override
   _StarRoomState createState() => _StarRoomState();
 }
 
+String _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 class _StarRoomState extends State<StarRoom> {
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double cont_w = (w - 40) / 3 - 15;
+    // double w = MediaQuery.of(context).size.width;
+    // double cont = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
           height: double.infinity,
@@ -123,6 +128,43 @@ class _StarRoomState extends State<StarRoom> {
                         borderRadius: BorderRadius.circular(10)),
                     color: Color.fromRGBO(3, 202, 164, 1),
                     onPressed: () {
+                      String name = "", status = "";
+                      String code = List.generate(
+                              6,
+                              (index) =>
+                                  _chars[Random().nextInt(_chars.length)])
+                          .join()
+                          .toString();
+                      setState(() {
+                        UniversalCode = code;
+                      });
+                      FirebaseFirestore.instance
+                          .collection('userids')
+                          .doc(FirebaseAuth.instance.currentUser.uid)
+                          .get()
+                          .then((value) => {
+                                FirebaseFirestore.instance
+                                    .collection("users")
+                                    .doc(value.data()['username'])
+                                    .get()
+                                    .then((value) => {
+                                          setState(() {
+                                            name = value.data()['name'];
+                                            status = value.data()['status'];
+                                          })
+                                        })
+                                    .then((value) => {
+                                          FirebaseFirestore.instance
+                                              .collection("room")
+                                              .doc(UniversalCode)
+                                              .set({
+                                            'url': "x",
+                                            'participants': [
+                                              {'name': name, 'status': status}
+                                            ],
+                                          })
+                                        })
+                              });
                       Navigator.push(
                           context,
                           MaterialPageRoute(

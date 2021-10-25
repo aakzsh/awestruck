@@ -1,6 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
-import 'package:awestruck/stars_sighting/star_home.dart';
 import 'package:flutter/material.dart';
 
 class Meditation extends StatefulWidget {
@@ -12,7 +11,7 @@ class _MeditationState extends State<Meditation> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double cont_w = (w - 40) / 3 - 15;
+    double cont = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -98,8 +97,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Color.fromRGBO(107, 228, 255, 1),
                   ),
                   Container(
@@ -110,8 +109,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Color.fromRGBO(233, 200, 253, 1),
                   ),
                   Container(
@@ -122,8 +121,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Palette().auroraGreen,
                   )
                 ],
@@ -152,8 +151,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Palette().auroraGreen,
                   ),
                   Container(
@@ -164,8 +163,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Color.fromRGBO(107, 228, 255, 1),
                   ),
                   Container(
@@ -176,8 +175,8 @@ class _MeditationState extends State<Meditation> {
                               fontSize: 20,
                               fontWeight: FontWeight.bold)),
                     ),
-                    height: cont_w,
-                    width: cont_w,
+                    height: cont,
+                    width: cont,
                     color: Color.fromRGBO(107, 228, 255, 1),
                   )
                 ],

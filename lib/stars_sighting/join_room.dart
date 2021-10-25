@@ -1,5 +1,6 @@
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
+import 'package:awestruck/stars_sighting/gaze.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
 
@@ -8,11 +9,15 @@ class JoinRoom extends StatefulWidget {
   _JoinRoomState createState() => _JoinRoomState();
 }
 
+String UniversalCode;
+
 class _JoinRoomState extends State<JoinRoom> {
+  String code = "";
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double cont_w = (w - 40) / 3 - 15;
+    // double cont_w = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
           height: double.infinity,
@@ -80,37 +85,48 @@ class _JoinRoomState extends State<JoinRoom> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text("Enter Room ID",
-                      style: TextStyle(
-                        color: Colors.white54,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                      )),
-                ),
-                Container(
-                  color: Color.fromRGBO(21, 29, 49, 1).withOpacity(0.9),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                          width: w - 90,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  border: InputBorder.none, hintText: ""),
-                            ),
+                Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Enter Room ID",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
                           )),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      color: Color.fromRGBO(21, 29, 49, 1).withOpacity(0.9),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                              width: w - 90,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: TextField(
+                                  onChanged: (value) {
+                                    code = value;
+                                    UniversalCode = value;
+                                  },
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none, hintText: ""),
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 MaterialButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                     color: Color.fromRGBO(3, 202, 164, 1),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Gaze()));
+                    },
                     child: ListTile(
                         title: Center(
                       child: Text(

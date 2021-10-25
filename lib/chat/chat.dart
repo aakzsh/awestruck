@@ -1,4 +1,3 @@
-import 'package:awestruck/auth/login.dart';
 import 'package:flutter/material.dart';
 
 class Chat extends StatefulWidget {
