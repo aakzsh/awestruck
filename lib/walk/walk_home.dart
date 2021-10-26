@@ -16,23 +16,51 @@ class _WalkHomeState extends State<WalkHome> {
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
   DateTime _selectedDay;
+  DateTime prevDay;
   DateTime _focusedDay = DateTime.now();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  int rSteps = 0;
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    //get steps arr and totalStepsUntilYesterday
+    //update totaluntilyesteray on day changeS
   }
 
   void onStepCount(StepCount event) {
     print(event);
+    print("trynna update");
     setState(() {
       _steps = event.steps.toString();
+
+      if (!isSameDay(DateTime(2021, 10, 26), DateTime(2021, 10, 27))) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc('shroo')
+            .get()
+            .then((value) => {
+                  setState(() {
+                    rSteps = value.data()['steps'];
+                  })
+                })
+            .then((value) {
+          firestore
+              .collection('users')
+              .doc('shroo')
+              .update({'totalStepsUntilYesterday': rSteps, 'hehe': 'here'});
+        });
+
+        prevDay = DateTime.now();
+      }
+      //update total steps
+      firestore.collection('users').doc('shroo').update({'steps': event.steps});
     });
   }
 
   void onPedestrianStatusChanged(PedestrianStatus event) {
     print(event);
+
     setState(() {
       _status = event.status;
     });
@@ -139,7 +167,8 @@ class _WalkHomeState extends State<WalkHome> {
                           height: 20,
                         ),
                         Text(
-                          "600",
+                          //_steps- totaluntilyesterday
+                          _steps,
                           style: TextStyle(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         ),
@@ -251,10 +280,10 @@ class _WalkHomeState extends State<WalkHome> {
                     },
                     onDaySelected: (selectedDay, focusedDay) {
                       if (!isSameDay(_selectedDay, selectedDay)) {
-                        // Call `setState()` when updating the selected day
                         setState(() {
                           _selectedDay = selectedDay;
                           print(selectedDay.weekday);
+                          //todo:update goals and steps based on date
                           _focusedDay = focusedDay;
                         });
                       }
