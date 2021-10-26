@@ -28,8 +28,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String greeting = "Morning";
+  var now = DateTime.now();
+  findGreeting(int x) {
+    if (x > 3 && x < 12) {
+      setState(() {
+        greeting = "Morning";
+      });
+    } else if (x >= 12 && x < 16) {
+      setState(() {
+        greeting = "Afternoon";
+      });
+    } else if (x >= 16 && x < 21) {
+      setState(() {
+        greeting = "Evening";
+      });
+    } else {
+      setState(() {
+        greeting = "Night";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    findGreeting(now.hour);
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     double fh = 0.3 * h;
@@ -50,7 +73,7 @@ class _HomeState extends State<Home> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 48, 0, 0),
                   child: Text(
-                    "Good Morning",
+                    "Good $greeting",
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: Colors.white,

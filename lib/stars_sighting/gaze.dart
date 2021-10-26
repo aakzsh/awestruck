@@ -1,20 +1,42 @@
+import 'dart:convert';
+import 'package:awestruck/constant_widgets/img_string.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
+import 'package:awestruck/stars_sighting/join_room.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:awestruck/stars_sighting/byte_image.dart';
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
-import 'dart:convert';
 
 class Gaze extends StatefulWidget {
-  const Gaze({Key key}) : super(key: key);
+  // const Gaze({Key key}) : super(key: key);
 
   @override
   _GazeState createState() => _GazeState();
 }
 
 class _GazeState extends State<Gaze> {
+  Gaze gr;
+  _fetchImage() {
+    FirebaseFirestore.instance
+        .collection("room")
+        .doc("HEHEHE")
+        .get()
+        .then((value) => {
+              setState(() {
+                url = value.data()['url'];
+              })
+            });
+  }
+
+  String gaze = "HEHEHE";
+  // String url =
+  //     "https://media.discordapp.net/attachments/873911460055642152/900611477306765362/10.png";
+
   @override
   Widget build(BuildContext context) {
+    // print(gr.code);
+    _fetchImage();
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -27,9 +49,8 @@ class _GazeState extends State<Gaze> {
                     height: h,
                     width: w,
                     child: Panorama(
-                      // child: Image.memory(base64Decode(src_image)),
-                      child: Image.network(
-                          "https://media.discordapp.net/attachments/873911460055642152/900611477306765362/10.png"),
+                      child: Image.memory(base64Decode(url)),
+                      // child: Image.network(url),
                       sensorControl: SensorControl.Orientation,
                       animSpeed: 0.1,
                     )),
@@ -42,7 +63,7 @@ class _GazeState extends State<Gaze> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text("Room: lolol",
+                            Text("Room: $UniversalCode",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -69,8 +90,11 @@ class _GazeState extends State<Gaze> {
                     ),
                     Container(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
+                          SizedBox(
+                            height: 20,
+                          ),
                           ListTile(
                               leading:
                                   Text("Currently Viewing\nKolkata, India"),
@@ -80,21 +104,29 @@ class _GazeState extends State<Gaze> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    IconButton(
+                                    MaterialButton(
+                                      color: Colors.blue.withOpacity(0.2),
+                                      onPressed: () {},
+                                      shape: CircleBorder(),
+                                      child: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons.music_note,
+                                              color: Colors.blue)),
+                                    ),
+                                    MaterialButton(
                                         onPressed: () {},
-                                        icon: Icon(Icons.location_city,
-                                            color: Colors.pink)),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.music_note,
-                                            color: Colors.blue)),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.message,
-                                            color: Colors.greenAccent))
+                                        color: Colors.blue.withOpacity(0.2),
+                                        shape: CircleBorder(),
+                                        child: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(Icons.message,
+                                                color: Colors.greenAccent))),
                                   ],
                                 ),
                               )),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
@@ -124,7 +156,7 @@ class _GazeState extends State<Gaze> {
                       ),
                       color: Palette().bluebg,
                       width: w,
-                      height: 150,
+                      height: 200,
                     ),
                   ],
                 )
