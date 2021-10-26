@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class WalkHome extends StatefulWidget {
   @override
@@ -14,7 +16,9 @@ class _WalkHomeState extends State<WalkHome> {
   Stream<StepCount> _stepCountStream;
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
-
+  DateTime _selectedDay;
+  DateTime _focusedDay = DateTime.now();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   @override
   void initState() {
     super.initState();
@@ -62,6 +66,20 @@ class _WalkHomeState extends State<WalkHome> {
     if (!mounted) return;
   }
 
+  void getStepsData() {}
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime
+        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday - 1));
+  }
+
+  DateTime today = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.week;
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -103,7 +121,7 @@ class _WalkHomeState extends State<WalkHome> {
                   ),
                 ),
                 CircularPercentIndicator(
-                  radius: 200.0,
+                  radius: 180.0,
                   lineWidth: 13.0,
                   animation: true,
                   animationDuration: 2000,
@@ -123,7 +141,7 @@ class _WalkHomeState extends State<WalkHome> {
                           height: 20,
                         ),
                         Text(
-                          _steps,
+                          "600",
                           style: TextStyle(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         ),
@@ -180,16 +198,71 @@ class _WalkHomeState extends State<WalkHome> {
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
                                   color: Color(0xff86EDFB)),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     )
                   ],
                 ),
-                SizedBox(
-                  height: 2,
-                )
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 70),
+                  child: TableCalendar(
+                    calendarFormat: _calendarFormat,
+                    firstDay: findFirstDateOfTheWeek(today),
+                    lastDay: findLastDateOfTheWeek(today),
+                    focusedDay: DateTime.now(),
+                    calendarBuilders: CalendarBuilders(
+                      selectedBuilder: (context, day, focusedDay) {
+                        final text = day.day.toString();
+                        return Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Palette().auroraGreen,
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Center(
+                              child: Text(
+                                text,
+                                style: TextStyle(color: Palette().bluebg),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      todayBuilder: (context, day, focusedDay) {
+                        final text = day.day.toString();
+                        return Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color(0xff0A5E4E), width: 2),
+                                borderRadius: BorderRadius.circular(25)),
+                            child: Center(
+                              child: Text(
+                                text,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    selectedDayPredicate: (day) {
+                      return isSameDay(_selectedDay, day);
+                    },
+                    onDaySelected: (selectedDay, focusedDay) {
+                      if (!isSameDay(_selectedDay, selectedDay)) {
+                        // Call `setState()` when updating the selected day
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          print(selectedDay.weekday);
+                          _focusedDay = focusedDay;
+                        });
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           )),

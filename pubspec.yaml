@@ -39,6 +39,7 @@ dependencies:
   eva_icons_flutter: 
   percent_indicator: 
   pedometer: ^3.0.0
+  table_calendar: ^3.0.3
 
 dev_dependencies:
   flutter_test:
