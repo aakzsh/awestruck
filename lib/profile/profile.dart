@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,7 +13,13 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String newname, newstatus;
-  String name = "name", status = "status", username = "username";
+  String name = "name",
+      status = "status",
+      username = "username",
+      dob = "2000-01-01-00:00:00",
+      dobstr = "Jan 1, 2000",
+      starsign = "Capricon";
+  int level = 1;
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -161,7 +168,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Level"),
                                   Text(
-                                    "7",
+                                    level.toString(),
                                     style: TextStyle(
                                         fontSize: 50,
                                         color: Colors.pinkAccent,
@@ -214,7 +221,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Star Sign"),
                                   Icon(Icons.star, color: Colors.greenAccent),
-                                  Text("Aquarius")
+                                  Text(starsign)
                                 ],
                               ),
                               decoration: BoxDecoration(
@@ -233,14 +240,21 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 40,
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Your Star Map"),
+                    Row(
+                      children: <Widget>[
+                        Text("Your Star Map [1st Jan 2000]"),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Container(
+                      child: WebView(
+                        initialUrl:
+                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=19&&lng=72&&time=2000-01-01-00:00:00",
+                        javascriptMode: JavascriptMode.unrestricted,
+                      ),
                       width: w - 40,
                       height: 200,
                       color: Colors.blue.withOpacity(0.2),
@@ -264,7 +278,10 @@ class _ProfileState extends State<Profile> {
                               },
                               icon: Icon(EvaIcons.logOut,
                                   color: Palette().auroraGreen),
-                            )))
+                            ))),
+                    SizedBox(
+                      height: 80,
+                    )
                   ],
                 )),
           ),

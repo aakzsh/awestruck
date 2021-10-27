@@ -145,6 +145,8 @@ class _SignupState extends State<Signup> {
                                             .collection("users")
                                             .doc(username)
                                             .set({
+                                          "level": 1,
+                                          "dob": "2000-01-01-00:00:00",
                                           "name": username,
                                           "steps_total": 0,
                                           "email": _email,

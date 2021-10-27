@@ -39,6 +39,8 @@ dependencies:
   eva_icons_flutter: 
   percent_indicator: 
   pedometer: ^3.0.0
+  just_audio:
+  webview_flutter:
 
 dev_dependencies:
   flutter_test:
