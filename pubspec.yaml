@@ -40,6 +40,7 @@ dependencies:
   percent_indicator: 
   pedometer: ^3.0.0
   table_calendar: ^3.0.3
+  after_layout: ^1.1.0
 
 dev_dependencies:
   flutter_test:

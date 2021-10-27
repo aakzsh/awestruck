@@ -24,8 +24,6 @@ class _WalkHomeState extends State<WalkHome> {
   void initState() {
     super.initState();
     initPlatformState();
-    //get steps arr and totalStepsUntilYesterday
-    //update totaluntilyesteray on day changeS
   }
 
   void onStepCount(StepCount event) {
@@ -48,7 +46,7 @@ class _WalkHomeState extends State<WalkHome> {
           firestore
               .collection('users')
               .doc('shroo')
-              .update({'totalStepsUntilYesterday': rSteps, 'hehe': 'here'});
+              .update({'totalStepsUntilYesterday': rSteps});
         });
 
         prevDay = DateTime.now();
