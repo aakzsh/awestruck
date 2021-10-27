@@ -1,4 +1,5 @@
 import 'package:awestruck/auth/login.dart';
+import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -120,6 +121,13 @@ class _HomeState extends State<Home> {
     return StreamBuilder(
         stream: documentStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return CircularProgressIndicator(
+              backgroundColor: Palette().bluebg,
+            );
+          }
+
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
