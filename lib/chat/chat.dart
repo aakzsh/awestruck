@@ -1,8 +1,11 @@
 import 'package:awestruck/chat/messaging.dart';
 import 'package:awestruck/chat/pending_req.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/home.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:awestruck/chat/friend.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -11,9 +14,43 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
   String newFriend;
+  List<Friend> _friends = <Friend>[];
+  @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  void getInfo() {
+    print(username);
+    FirebaseFirestore.instance
+        .collection('friends')
+        .doc(username)
+        .get()
+        .then((value) {
+      List friendList = value.data()['friends'];
+
+      for (var friend in friendList) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(friend)
+            .get()
+            .then((value) {
+          print(value.data());
+
+          setState(() {
+            _friends.add(Friend(friend, value.data()['status']));
+          });
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
+    // getInfo();
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -125,15 +162,22 @@ class _ChatState extends State<Chat> {
                   ),
                 ),
               ),
-              InkWell(
-                child: friendTile("Amanda", "meditating"),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Messaging()));
-                },
-              ),
-              friendTile("frooti", "being a queen"),
-              friendTile("aakash", "being frooti ka friemd")
+              // InkWell(
+              //   child: friendTile("Amanda", "meditating"),
+              //   onTap: () {
+              //     Navigator.push(context,
+              //         MaterialPageRoute(builder: (context) => Messaging()));
+              //   },
+              // ),
+              // friendTile("frooti", "being a queen"),
+              // friendTile("aakash", "being frooti ka friemd")
+              ListView.builder(
+                  itemCount: _friends.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return friendTile(
+                        _friends[index].name, _friends[index].status);
+                  })
             ],
           ),
         ),
