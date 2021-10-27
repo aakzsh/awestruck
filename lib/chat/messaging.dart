@@ -16,12 +16,15 @@ class _MessagingState extends State<Messaging> {
         width: w,
         color: Palette().bluebg,
         height: h,
-        child: Column(
+        child: SingleChildScrollView(
+
+          child: Column(
           children: <Widget>[
             Container(
-              height: 90,
+              height: 100,
               // color: Colors.pink,
-              child: Row(
+              child: Center(child: 
+              Row(
                 children: <Widget>[
                   IconButton(
                       onPressed: () {
@@ -45,9 +48,10 @@ class _MessagingState extends State<Messaging> {
                       ))
                 ],
               ),
+              )
             ),
             Container(
-              height: h - 210,
+              height: h - 220,
               child: ListView(children: <Widget>[
                 sendText("Amanda", "Today at 10:12", "Hello i'm Amanda"),
                 receiveText("frooti", "Today at 10:13", "sach bamtao"),
@@ -99,6 +103,7 @@ class _MessagingState extends State<Messaging> {
             )
           ],
         ),
+        )
       ),
     );
   }

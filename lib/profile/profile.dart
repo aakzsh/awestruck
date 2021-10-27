@@ -1,3 +1,4 @@
+import 'package:awestruck/auth/login.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -63,7 +64,7 @@ class _ProfileState extends State<Profile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("Meditation",
+                        Text("Profile",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -269,11 +270,11 @@ class _ProfileState extends State<Profile> {
                             child: IconButton(
                               onPressed: () {
                                 FirebaseAuth.instance.signOut().then((res) {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => App()),
-                                      (Route<dynamic> route) => false);
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => App()),
+                                          (route) => false);
                                 });
                               },
                               icon: Icon(EvaIcons.logOut,
@@ -288,3 +289,11 @@ class _ProfileState extends State<Profile> {
         ));
   }
 }
+
+
+
+// pushAndRemoveUntil(
+//                                       context,
+//                                       MaterialPageRoute(
+//                                           builder: (context) => Login()),
+//                                       (Route<dynamic> route) => false);

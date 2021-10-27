@@ -160,8 +160,9 @@ class _CreateRoomState extends State<CreateRoom> {
                                 ),
                                 IconButton(
                                     onPressed: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: UniversalCode));
+                                      Clipboard.setData(ClipboardData(
+                                              text: UniversalCode))
+                                          .then((value) => {print("hello")});
                                     },
                                     icon: Icon(
                                       Icons.copy,

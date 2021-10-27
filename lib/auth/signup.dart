@@ -61,7 +61,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (emaill) {
@@ -85,7 +85,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (namee) {
@@ -111,7 +111,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (namee) {
