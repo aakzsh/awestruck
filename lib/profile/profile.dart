@@ -253,7 +253,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       child: WebView(
                         initialUrl:
-                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=19&&lng=72&&time=2000-01-01-00:00:00",
+                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=now",
                         javascriptMode: JavascriptMode.unrestricted,
                       ),
                       width: w - 40,
