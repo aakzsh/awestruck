@@ -162,7 +162,14 @@ class _CreateRoomState extends State<CreateRoom> {
                                     onPressed: () {
                                       Clipboard.setData(ClipboardData(
                                               text: UniversalCode))
-                                          .then((value) => {print("hello")});
+                                          .then((value) => {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content:
+                                                          Text("Code Copied!")),
+                                                )
+                                              });
                                     },
                                     icon: Icon(
                                       Icons.copy,

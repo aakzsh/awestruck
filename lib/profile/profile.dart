@@ -257,8 +257,8 @@ class _ProfileState extends State<Profile> {
                         javascriptMode: JavascriptMode.unrestricted,
                       ),
                       width: w - 40,
-                      height: 200,
-                      color: Colors.blue.withOpacity(0.2),
+                      height: w - 40,
+                      color: Colors.transparent,
                     ),
                     SizedBox(
                       height: 20,
