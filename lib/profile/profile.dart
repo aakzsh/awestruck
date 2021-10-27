@@ -1,9 +1,11 @@
+import 'package:awestruck/auth/login.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -12,7 +14,13 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String newname, newstatus;
-  String name = "name", status = "status", username = "username";
+  String name = "name",
+      status = "status",
+      username = "username",
+      dob = "2000-01-01-00:00:00",
+      dobstr = "Jan 1, 2000",
+      starsign = "Capricon";
+  int level = 1;
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -56,7 +64,7 @@ class _ProfileState extends State<Profile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text("Meditation",
+                        Text("Profile",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -161,7 +169,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Level"),
                                   Text(
-                                    "7",
+                                    level.toString(),
                                     style: TextStyle(
                                         fontSize: 50,
                                         color: Colors.pinkAccent,
@@ -214,7 +222,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Star Sign"),
                                   Icon(Icons.star, color: Colors.greenAccent),
-                                  Text("Aquarius")
+                                  Text(starsign)
                                 ],
                               ),
                               decoration: BoxDecoration(
@@ -233,17 +241,24 @@ class _ProfileState extends State<Profile> {
                     SizedBox(
                       height: 40,
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Your Star Map"),
+                    Row(
+                      children: <Widget>[
+                        Text("Your Star Map [1st Jan 2000]"),
+                        IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Container(
+                      child: WebView(
+                        initialUrl:
+                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=now",
+                        javascriptMode: JavascriptMode.unrestricted,
+                      ),
                       width: w - 40,
-                      height: 200,
-                      color: Colors.blue.withOpacity(0.2),
+                      height: w - 40,
+                      color: Colors.transparent,
                     ),
                     SizedBox(
                       height: 20,
@@ -255,19 +270,30 @@ class _ProfileState extends State<Profile> {
                             child: IconButton(
                               onPressed: () {
                                 FirebaseAuth.instance.signOut().then((res) {
-                                  Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => App()),
-                                      (Route<dynamic> route) => false);
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) => App()),
+                                          (route) => false);
                                 });
                               },
                               icon: Icon(EvaIcons.logOut,
                                   color: Palette().auroraGreen),
-                            )))
+                            ))),
+                    SizedBox(
+                      height: 80,
+                    )
                   ],
                 )),
           ),
         ));
   }
 }
+
+
+
+// pushAndRemoveUntil(
+//                                       context,
+//                                       MaterialPageRoute(
+//                                           builder: (context) => Login()),
+//                                       (Route<dynamic> route) => false);

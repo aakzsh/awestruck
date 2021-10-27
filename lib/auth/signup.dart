@@ -61,7 +61,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (emaill) {
@@ -85,7 +85,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (namee) {
@@ -111,7 +111,7 @@ class _SignupState extends State<Signup> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (namee) {
@@ -145,6 +145,8 @@ class _SignupState extends State<Signup> {
                                             .collection("users")
                                             .doc(username)
                                             .set({
+                                          "level": 1,
+                                          "dob": "2000-01-01-00:00:00",
                                           "name": username,
                                           "steps_total": 0,
                                           "email": _email,

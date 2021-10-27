@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (val1) {
@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
                   Container(
                     child: Padding(
                       padding: EdgeInsets.all(
-                        20,
+                        10,
                       ),
                       child: TextField(
                         onChanged: (val2) {

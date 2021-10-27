@@ -160,8 +160,16 @@ class _CreateRoomState extends State<CreateRoom> {
                                 ),
                                 IconButton(
                                     onPressed: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: UniversalCode));
+                                      Clipboard.setData(ClipboardData(
+                                              text: UniversalCode))
+                                          .then((value) => {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content:
+                                                          Text("Code Copied!")),
+                                                )
+                                              });
                                     },
                                     icon: Icon(
                                       Icons.copy,
@@ -178,7 +186,7 @@ class _CreateRoomState extends State<CreateRoom> {
                               style: TextStyle(color: Colors.white54),
                             ),
                           ),
-                          Container(child: ParticipantList('name', 'status')),
+                          Container(child: participantList('name', 'status')),
                         ],
                       ),
                     ),
@@ -216,7 +224,7 @@ class _CreateRoomState extends State<CreateRoom> {
   }
 }
 
-ParticipantList(name, status) {
+participantList(name, status) {
   return Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: ListTile(
