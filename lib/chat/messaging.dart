@@ -41,6 +41,92 @@ class _MessagingState extends State<Messaging> {
       builder: (context, snap) {
         if (snap.hasError) {
           return Text('Error');
+        } else if (!snap.hasData || snap.data.snapshot.value == null) {
+          return Container(
+              width: w,
+              color: Palette().bluebg,
+              height: h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                      height: 100,
+                      // color: Colors.pink,
+                      child: Center(
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.white,
+                                )),
+                            Container(
+                                width: w - 100,
+                                child: ListTile(
+                                  title: Text(widget.name),
+                                  subtitle: Text(
+                                    widget.status,
+                                    style: TextStyle(
+                                        fontSize: 11, color: Colors.white54),
+                                  ),
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 70),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            width: w - 130,
+                            child: TextField(
+                                decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Type a message..",
+                            )),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              color: Palette().bluebg,
+                              child: Icon(Icons.sticky_note_2_rounded),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              color: Palette().bluebg,
+                              child: IconButton(
+                                onPressed: () {
+                                  newAurora(context);
+                                },
+                                icon: Icon(Icons.lock),
+                                color: Palette().auroraGreen,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(5)),
+                      height: 60,
+                    ),
+                  )
+                ],
+              ));
         } else {
           List data = snap.data.snapshot.value;
           // List item = [];
