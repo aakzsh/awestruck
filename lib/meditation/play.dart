@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:activity_ring/activity_ring.dart';
 
 class Play extends StatefulWidget {
   @override
@@ -117,80 +118,60 @@ class ControlButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Opens volume slider dialog
-        IconButton(
-          icon: Icon(Icons.volume_up),
-          onPressed: () {
-            showSliderDialog(
-              context: context,
-              title: "Adjust volume",
-              divisions: 10,
-              min: 0.0,
-              max: 1.0,
-              value: player.volume,
-              stream: player.volumeStream,
-              onChanged: player.setVolume,
-            );
-          },
-        ),
-
-        StreamBuilder<PlayerState>(
-          stream: player.playerStateStream,
-          builder: (context, snapshot) {
-            final playerState = snapshot.data;
-            final processingState = playerState?.processingState;
-            final playing = playerState?.playing;
-            if (processingState == ProcessingState.loading ||
-                processingState == ProcessingState.buffering) {
-              return Container(
-                margin: EdgeInsets.all(8.0),
-                width: 64.0,
-                height: 64.0,
-                child: CircularProgressIndicator(),
-              );
-            } else if (playing != true) {
-              return IconButton(
-                icon: Icon(Icons.play_arrow),
-                iconSize: 64.0,
-                onPressed: player.play,
-              );
-            } else if (processingState != ProcessingState.completed) {
-              return IconButton(
-                icon: Icon(Icons.pause),
-                iconSize: 64.0,
-                onPressed: player.pause,
-              );
-            } else {
-              return IconButton(
-                icon: Icon(Icons.replay),
-                iconSize: 64.0,
-                onPressed: () => player.seek(Duration.zero),
-              );
-            }
-          },
-        ),
-        // Opens speed slider dialog
-        StreamBuilder<double>(
-          stream: player.speedStream,
-          builder: (context, snapshot) => IconButton(
-            icon: Text("${snapshot.data?.toStringAsFixed(1)}x",
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            onPressed: () {
-              showSliderDialog(
-                context: context,
-                title: "Adjust speed",
-                divisions: 10,
-                min: 0.5,
-                max: 1.5,
-                value: player.speed,
-                stream: player.speedStream,
-                onChanged: player.setSpeed,
-              );
-            },
-          ),
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Opens volume slider dialog
+            Ring(
+              percent: 100,
+              color: RingColorScheme(ringColor: Colors.deepPurple[200]),
+              radius: 90,
+              width: 5,
+              child: Ring(
+                percent: 100,
+                color: RingColorScheme(ringColor: Colors.purple[200]),
+                radius: 80,
+                width: 5,
+                child: StreamBuilder<PlayerState>(
+                  stream: player.playerStateStream,
+                  builder: (context, snapshot) {
+                    final playerState = snapshot.data;
+                    final processingState = playerState?.processingState;
+                    final playing = playerState?.playing;
+                    if (processingState == ProcessingState.loading ||
+                        processingState == ProcessingState.buffering) {
+                      return Container(
+                        margin: EdgeInsets.all(8.0),
+                        width: 64.0,
+                        height: 64.0,
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (playing != true) {
+                      return IconButton(
+                        icon: Icon(Icons.play_arrow),
+                        iconSize: 64.0,
+                        onPressed: player.play,
+                      );
+                    } else if (processingState != ProcessingState.completed) {
+                      return IconButton(
+                        icon: Icon(Icons.pause),
+                        iconSize: 64.0,
+                        onPressed: player.pause,
+                      );
+                    } else {
+                      return IconButton(
+                        icon: Icon(Icons.replay),
+                        iconSize: 64.0,
+                        onPressed: () => player.seek(Duration.zero),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -231,74 +212,113 @@ class _SeekBarState extends State<SeekBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SliderTheme(
-          data: _sliderThemeData.copyWith(
-            thumbShape: HiddenThumbComponentShape(),
-            activeTrackColor: Colors.blue.shade100,
-            inactiveTrackColor: Colors.grey.shade300,
-          ),
-          child: ExcludeSemantics(
-            child: Slider(
-              min: 0.0,
-              max: widget.duration.inMilliseconds.toDouble(),
-              value: min(widget.bufferedPosition.inMilliseconds.toDouble(),
-                  widget.duration.inMilliseconds.toDouble()),
-              onChanged: (value) {
-                setState(() {
-                  _dragValue = value;
-                });
-                if (widget.onChanged != null) {
-                  widget.onChanged(Duration(milliseconds: value.round()));
-                }
-              },
-              onChangeEnd: (value) {
-                if (widget.onChangeEnd != null) {
-                  widget.onChangeEnd(Duration(milliseconds: value.round()));
-                }
-                _dragValue = null;
-              },
-            ),
-          ),
-        ),
-        SliderTheme(
-          data: _sliderThemeData.copyWith(
-            inactiveTrackColor: Colors.transparent,
-          ),
-          child: Slider(
-            min: 0.0,
-            max: widget.duration.inMilliseconds.toDouble(),
-            value: min(_dragValue ?? widget.position.inMilliseconds.toDouble(),
-                widget.duration.inMilliseconds.toDouble()),
-            onChanged: (value) {
-              setState(() {
-                _dragValue = value;
-              });
-              if (widget.onChanged != null) {
-                widget.onChanged(Duration(milliseconds: value.round()));
-              }
-            },
-            onChangeEnd: (value) {
-              if (widget.onChangeEnd != null) {
-                widget.onChangeEnd(Duration(milliseconds: value.round()));
-              }
-              _dragValue = null;
-            },
-          ),
-        ),
-        Positioned(
-          right: 16.0,
-          bottom: 0.0,
-          child: Text(
-              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                      .firstMatch("$_remaining")
-                      ?.group(1) ??
-                  '$_remaining',
-              style: Theme.of(context).textTheme.caption),
-        ),
-      ],
-    );
+    double w = MediaQuery.of(context).size.width;
+    return Padding(
+        padding: EdgeInsets.only(top: 150, right: 20, left: 20),
+        child: Container(
+            color: Colors.transparent,
+            width: w,
+            child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9),
+                  color: Colors.purple[200].withOpacity(0.5),
+                ),
+                width: w - 60,
+                height: 80,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "     Meditation",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Stack(
+                          children: [
+                            SliderTheme(
+                              data: _sliderThemeData.copyWith(
+                                thumbShape: HiddenThumbComponentShape(),
+                                activeTrackColor: Colors.blue.shade100,
+                                inactiveTrackColor: Colors.grey.shade300,
+                              ),
+                              child: ExcludeSemantics(
+                                child: Slider(
+                                  min: 0.0,
+                                  max:
+                                      widget.duration.inMilliseconds.toDouble(),
+                                  value: min(
+                                      widget.bufferedPosition.inMilliseconds
+                                          .toDouble(),
+                                      widget.duration.inMilliseconds
+                                          .toDouble()),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _dragValue = value;
+                                    });
+                                    if (widget.onChanged != null) {
+                                      widget.onChanged(Duration(
+                                          milliseconds: value.round()));
+                                    }
+                                  },
+                                  onChangeEnd: (value) {
+                                    if (widget.onChangeEnd != null) {
+                                      widget.onChangeEnd(Duration(
+                                          milliseconds: value.round()));
+                                    }
+                                    _dragValue = null;
+                                  },
+                                ),
+                              ),
+                            ),
+                            SliderTheme(
+                              data: _sliderThemeData.copyWith(
+                                inactiveTrackColor: Colors.transparent,
+                              ),
+                              child: Slider(
+                                min: 0.0,
+                                max: widget.duration.inMilliseconds.toDouble(),
+                                value: min(
+                                    _dragValue ??
+                                        widget.position.inMilliseconds
+                                            .toDouble(),
+                                    widget.duration.inMilliseconds.toDouble()),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _dragValue = value;
+                                  });
+                                  if (widget.onChanged != null) {
+                                    widget.onChanged(
+                                        Duration(milliseconds: value.round()));
+                                  }
+                                },
+                                onChangeEnd: (value) {
+                                  if (widget.onChangeEnd != null) {
+                                    widget.onChangeEnd(
+                                        Duration(milliseconds: value.round()));
+                                  }
+                                  _dragValue = null;
+                                },
+                              ),
+                            ),
+                            Positioned(
+                              right: 16.0,
+                              bottom: 0.0,
+                              child: Text(
+                                  RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                                          .firstMatch("$_remaining")
+                                          ?.group(1) ??
+                                      '$_remaining',
+                                  style: Theme.of(context).textTheme.caption),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ))));
   }
 
   Duration get _remaining => widget.duration - widget.position;

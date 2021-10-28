@@ -16,6 +16,7 @@ class Gaze extends StatefulWidget {
   _GazeState createState() => _GazeState();
 }
 
+var addresses, first;
 double lat = 28.5355;
 double lng = 77.3910;
 final coordinates = new Coordinates(lat, lng);
@@ -24,6 +25,10 @@ var address;
 
 class _GazeState extends State<Gaze> {
   Gaze gr;
+  // final coordinates = new Coordinates(19.0760, 72.8777);
+
+// print("${first.featureName} : ${first.addressLine}");
+
   _fetchImage() async {
     FirebaseFirestore.instance
         .collection("room")
@@ -36,6 +41,14 @@ class _GazeState extends State<Gaze> {
             });
   }
 
+  fetchcity() async {
+    addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    first = addresses.first;
+    setState(() {
+      yourCity = first.addressLine.toString();
+    });
+  }
+
   String gaze = "HEHEHE";
   // String url =
   //     "https://media.discordapp.net/attachments/873911460055642152/900611477306765362/10.png";
@@ -46,6 +59,8 @@ class _GazeState extends State<Gaze> {
 
     // print(gr.code);
     _fetchImage();
+    fetchcity();
+    // var c = _fetchcity();
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(

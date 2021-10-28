@@ -44,6 +44,7 @@ dependencies:
   table_calendar: ^3.0.3
   after_layout: ^1.1.0
   geocoder: ^0.2.1
+  activity_ring: ^0.2.0
 
 
 dev_dependencies:
