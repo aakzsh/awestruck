@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:awestruck/stars_sighting/byte_image.dart';
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
+import 'package:geocoder/geocoder.dart';
 
 class Gaze extends StatefulWidget {
   // const Gaze({Key key}) : super(key: key);
@@ -15,9 +16,15 @@ class Gaze extends StatefulWidget {
   _GazeState createState() => _GazeState();
 }
 
+double lat = 28.5355;
+double lng = 77.3910;
+final coordinates = new Coordinates(lat, lng);
+String yourCity = "city";
+var address;
+
 class _GazeState extends State<Gaze> {
   Gaze gr;
-  _fetchImage() {
+  _fetchImage() async {
     FirebaseFirestore.instance
         .collection("room")
         .doc("HEHEHE")
@@ -35,6 +42,8 @@ class _GazeState extends State<Gaze> {
 
   @override
   Widget build(BuildContext context) {
+    var addresses = Geocoder.local.findAddressesFromCoordinates(coordinates);
+
     // print(gr.code);
     _fetchImage();
     double h = MediaQuery.of(context).size.height;
@@ -96,8 +105,7 @@ class _GazeState extends State<Gaze> {
                             height: 20,
                           ),
                           ListTile(
-                              leading:
-                                  Text("Currently Viewing\nKolkata, India"),
+                              leading: Text("Currently Viewing\n" + yourCity),
                               title: SizedBox(),
                               trailing: Container(
                                 width: 200,
