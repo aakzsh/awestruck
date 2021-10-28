@@ -164,11 +164,9 @@ class _CreateRoomState extends State<CreateRoom> {
                                               text: UniversalCode))
                                           .then((value) => {
                                                 ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content:
-                                                          Text("Code Copied!")),
-                                                )
+                                                    .showSnackBar(SnackBar(
+                                                        content: Text(
+                                                            "Code Copied!"))),
                                               });
                                     },
                                     icon: Icon(

@@ -44,6 +44,8 @@ dependencies:
   table_calendar: ^3.0.3
   after_layout: ^1.1.0
   firebase_database: 
+  geocoder: ^0.2.1
+
 
 dev_dependencies:
   flutter_test:
