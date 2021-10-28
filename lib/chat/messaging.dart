@@ -1,3 +1,4 @@
+import 'package:awestruck/chat/msgData.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class _MessagingState extends State<Messaging> {
     // getUser(roomId);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
+    final messageController = TextEditingController();
     return Scaffold(
         body: StreamBuilder(
       stream: _messagesStream,
@@ -88,10 +90,36 @@ class _MessagingState extends State<Messaging> {
                           Container(
                             width: w - 130,
                             child: TextField(
+                                controller: messageController,
                                 decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Type a message..",
-                            )),
+                                  border: InputBorder.none,
+                                  hintText: "Type a message..",
+                                )),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              color: Palette().bluebg,
+                              child: InkWell(
+                                child: Icon(Icons.send),
+                                onTap: () {
+                                  String message_body = messageController.text;
+                                  final msgData = MsgData(
+                                      author: username,
+                                      message_body: message_body,
+                                      time: DateTime.now().toString());
+                                  _firebaseRef
+                                      .child(widget.roomId)
+                                      .push()
+                                      .set(msgData.toMap())
+                                      .then((value) {
+                                    messageController.clear();
+                                  });
+                                },
+                              ),
+                            ),
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(40),
@@ -128,11 +156,11 @@ class _MessagingState extends State<Messaging> {
                 ],
               ));
         } else {
-          List data = snap.data.snapshot.value;
-          // List item = [];
+          Map data = snap.data.snapshot.value;
+          List item = [];
 
-          // data.forEach((index, data) => item.add({"key": index, ...data}));
-          print("$data ==============");
+          data.forEach((index, data) => item.add({"key": index, ...data}));
+          print("$item ==============");
 
           return Container(
               width: w,
@@ -174,18 +202,18 @@ class _MessagingState extends State<Messaging> {
                     Container(
                         height: h - 220,
                         child: ListView.builder(
-                            itemCount: data.length,
+                            itemCount: item.length,
                             itemBuilder: (context, index) {
-                              if (data[index]['author'] == username) {
+                              if (item[index]['author'] == username) {
                                 return sendText(
-                                    data[index]['author'],
-                                    data[index]['time'],
-                                    data[index]['message_body']);
-                              } else if (data[index]['author'] == widget.name) {
+                                    item[index]['author'],
+                                    item[index]['time'],
+                                    item[index]['message_body']);
+                              } else if (item[index]['author'] == widget.name) {
                                 return receiveText(
-                                    data[index]['author'],
-                                    data[index]['time'],
-                                    data[index]['message_body']);
+                                    item[index]['author'],
+                                    item[index]['time'],
+                                    item[index]['message_body']);
                               } else {
                                 return Text('hehe');
                               }
@@ -199,10 +227,37 @@ class _MessagingState extends State<Messaging> {
                             Container(
                               width: w - 130,
                               child: TextField(
+                                  controller: messageController,
                                   decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Type a message..",
-                              )),
+                                    border: InputBorder.none,
+                                    hintText: "Type a message..",
+                                  )),
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                color: Palette().bluebg,
+                                child: InkWell(
+                                  child: Icon(Icons.send),
+                                  onTap: () {
+                                    String message_body =
+                                        messageController.text;
+                                    final msgData = MsgData(
+                                        author: username,
+                                        message_body: message_body,
+                                        time: DateTime.now().toString());
+                                    _firebaseRef
+                                        .child(widget.roomId)
+                                        .push()
+                                        .set(msgData.toMap())
+                                        .then((value) {
+                                      messageController.clear();
+                                    });
+                                  },
+                                ),
+                              ),
                             ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(40),
