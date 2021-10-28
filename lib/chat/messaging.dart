@@ -1,113 +1,161 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Messaging extends StatefulWidget {
+  Messaging(this.roomId, this.status, this.name);
+  String roomId;
+  String name;
+  String status;
   @override
   _MessagingState createState() => _MessagingState();
 }
 
 class _MessagingState extends State<Messaging> {
+  DatabaseReference _messagesRef;
+  DatabaseReference _firebaseRef = FirebaseDatabase(
+          databaseURL:
+              'https://awestruck-d86c7-default-rtdb.asia-southeast1.firebasedatabase.app')
+      .reference();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final roomId = ModalRoute.of(context).settings.arguments;
+    Stream _messagesStream =
+        _firebaseRef.child(widget.roomId).orderByChild('time').onValue;
+    print(widget.roomId);
+    // getUser(roomId);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Container(
-          width: w,
-          color: Palette().bluebg,
-          height: h,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                    height: 100,
-                    // color: Colors.pink,
-                    child: Center(
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
+        body: StreamBuilder(
+      stream: _messagesStream,
+      builder: (context, snap) {
+        if (snap.hasError) {
+          return Text('Error');
+        } else {
+          List data = snap.data.snapshot.value;
+          // List item = [];
+
+          // data.forEach((index, data) => item.add({"key": index, ...data}));
+          print("$data ==============");
+
+          return Container(
+              width: w,
+              color: Palette().bluebg,
+              height: h,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                        height: 100,
+                        // color: Colors.pink,
+                        child: Center(
+                          child: Row(
+                            children: <Widget>[
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white,
+                                  )),
+                              Container(
+                                  width: w - 100,
+                                  child: ListTile(
+                                    title: Text(widget.name),
+                                    subtitle: Text(
+                                      widget.status,
+                                      style: TextStyle(
+                                          fontSize: 11, color: Colors.white54),
+                                    ),
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        )),
+                    Container(
+                        height: h - 220,
+                        child: ListView.builder(
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              if (data[index]['author'] == username) {
+                                return sendText(
+                                    data[index]['author'],
+                                    data[index]['time'],
+                                    data[index]['message_body']);
+                              } else if (data[index]['author'] == widget.name) {
+                                return receiveText(
+                                    data[index]['author'],
+                                    data[index]['time'],
+                                    data[index]['message_body']);
+                              } else {
+                                return Text('hehe');
+                              }
+                            })),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Container(
+                              width: w - 130,
+                              child: TextField(
+                                  decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Type a message..",
                               )),
-                          Container(
-                              width: w - 100,
-                              child: ListTile(
-                                title: Text("Amanda"),
-                                subtitle: Text(
-                                  "meditating",
-                                  style: TextStyle(
-                                      fontSize: 11, color: Colors.white54),
-                                ),
-                                leading: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                ),
-                              ))
-                        ],
-                      ),
-                    )),
-                Container(
-                  height: h - 220,
-                  child: ListView(children: <Widget>[
-                    sendText("Amanda", "Today at 10:12", "Hello i'm Amanda"),
-                    receiveText("frooti", "Today at 10:13", "sach bamtao"),
-                    auroraText(context)
-                  ]),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Container(
-                          width: w - 130,
-                          child: TextField(
-                              decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Type a message..",
-                          )),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            color: Palette().bluebg,
-                            child: Icon(Icons.sticky_note_2_rounded),
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            color: Palette().bluebg,
-                            child: IconButton(
-                              onPressed: () {
-                                newAurora(context);
-                              },
-                              icon: Icon(Icons.lock),
-                              color: Palette().auroraGreen,
                             ),
-                          ),
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(5)),
-                    height: 60,
-                  ),
-                )
-              ],
-            ),
-          )),
-    );
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                color: Palette().bluebg,
+                                child: Icon(Icons.sticky_note_2_rounded),
+                              ),
+                            ),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                color: Palette().bluebg,
+                                child: IconButton(
+                                  onPressed: () {
+                                    newAurora(context);
+                                  },
+                                  icon: Icon(Icons.lock),
+                                  color: Palette().auroraGreen,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.blue.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(5)),
+                        height: 60,
+                      ),
+                    )
+                  ],
+                ),
+              ));
+        }
+      },
+    ));
   }
 }
 

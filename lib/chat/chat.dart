@@ -37,10 +37,11 @@ class _ChatState extends State<Chat> {
             .get()
             .then((value) {
           print(value.data());
-
-          setState(() {
-            _friends.add(Friend(friend, value.data()['status']));
-          });
+          if (!_friends.contains(Friend(friend, value.data()['status']))) {
+            setState(() {
+              _friends.add(Friend(friend, value.data()['status']));
+            });
+          }
         });
       }
     });
@@ -176,7 +177,7 @@ class _ChatState extends State<Chat> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return friendTile(
-                        _friends[index].name, _friends[index].status);
+                        _friends[index].name, _friends[index].status, context);
                   })
             ],
           ),
@@ -186,7 +187,13 @@ class _ChatState extends State<Chat> {
   }
 }
 
-friendTile(name, status) {
+friendTile(name, status, context) {
+  String roomId;
+  List people = [name, username];
+  people.sort();
+
+  roomId = people[0] + "_" + people[1];
+  print("$roomId in chat");
   return Padding(
       padding: EdgeInsets.only(bottom: 20),
       child: ListTile(
@@ -199,5 +206,15 @@ friendTile(name, status) {
           backgroundColor: Palette().auroraGreen,
           radius: 20,
         ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Messaging(roomId, status, name),
+                settings: RouteSettings(
+                    // arguments: {roomId: roomId, status: status},
+                    ),
+              ));
+        },
       ));
 }
