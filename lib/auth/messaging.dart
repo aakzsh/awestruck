@@ -24,17 +24,15 @@ class _MessagingState extends State<Messaging> {
           databaseURL:
               'https://awestruck-d86c7-default-rtdb.asia-southeast1.firebasedatabase.app')
       .reference();
-  String h = "happy";
-  String url1, url2;
 
-  String getStickerString(String h) {
-    String GET_STICKERS = ''' 
-    
+  sendSticker(_firebaseref, widget, context) {
+    String stickerText = "happy";
+    final GET_STICKERS = ''' 
     query SearchStickerSample {
       sticker {
         searchStickers(
           req:{
-            searchStickersParams:{searchText: "$h", numberResults: 2},
+            searchStickersParams:{searchText: "happy", numberResults: 2},
             stickerUserContext:{countryCode: US, localTimeZoneUTCOffsetMinutes: 2,locale: EN_US}
           }){
           stickerResults {
@@ -49,13 +47,6 @@ class _MessagingState extends State<Messaging> {
       }
     }
   ''';
-    return GET_STICKERS;
-  }
-
-  sendSticker(_firebaseref, widget, context) {
-    print("$h -----------------------------");
-
-    final _stickertextcontroller = TextEditingController();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -74,32 +65,22 @@ class _MessagingState extends State<Messaging> {
                         Container(
                           width: 150,
                           child: TextField(
-                            controller: _stickertextcontroller,
                             decoration: InputDecoration.collapsed(
                                 hintText: "Search Stickers"),
                           ),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                print(
-                                    "****************************** ${_stickertextcontroller.text}");
-                                h = _stickertextcontroller.text;
-                              });
-                            },
-                            icon: Icon(Icons.search))
+                        IconButton(onPressed: () {}, icon: Icon(Icons.search))
                       ],
                     ),
                     gq.Query(
                       options: gq.QueryOptions(
-                        document: gq.gql(getStickerString(h)),
+                        document: gq.gql(GET_STICKERS),
                       ),
                       builder: (
                         gq.QueryResult result, {
                         VoidCallback refetch,
                         gq.FetchMore fetchMore,
                       }) {
-                        print("query");
                         if (result.hasException) {
                           return Text(result.exception.toString());
                         }
@@ -113,10 +94,8 @@ class _MessagingState extends State<Messaging> {
 
                         print(
                             "${repositories[0]['pngURL']} ============================");
-
                         String url1 = repositories[0]['pngURL'] + ".png";
                         String url2 = repositories[1]['pngURL'] + ".png";
-
                         // return Text("hello");
                         // return Image.network(
                         //   url,
@@ -144,22 +123,7 @@ class _MessagingState extends State<Messaging> {
                                     .then((value) {});
                               },
                             ),
-                            InkWell(
-                              child: Image.network(url2, height: 50),
-                              onTap: () {
-                                final msgData = MsgData(
-                                    author: username,
-                                    message_body: null,
-                                    time: DateTime.now().toString(),
-                                    aurora: false,
-                                    sticker: url2);
-                                _firebaseref
-                                    .child(widget.roomId)
-                                    .push()
-                                    .set(msgData.toMap())
-                                    .then((value) {});
-                              },
-                            ),
+                            Image.network(url2, height: 50)
                           ],
                         ));
                       },
@@ -396,7 +360,7 @@ class _MessagingState extends State<Messaging> {
                                 }
                               } else if (item[index]['author'] == widget.name) {
                                 if (item[index]['message_body'] != null) {
-                                  return receiveText(
+                                  return sendText(
                                       item[index]['author'],
                                       item[index]['time'],
                                       item[index]['message_body']);
