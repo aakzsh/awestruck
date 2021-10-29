@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:awestruck/auth/login.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/main.dart';
@@ -50,6 +52,7 @@ class _ProfileState extends State<Profile> {
   List<Map> friendList = [
     {'name': 'name'}
   ];
+  // String pfp = "";
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -65,6 +68,7 @@ class _ProfileState extends State<Profile> {
                   .get()
                   .then((value) => {
                         setState(() {
+                          // pfp = value.data()['pfp'];
                           name = value.data()['name'];
                           status = value.data()['status'];
                           dob = value.data()['dob'];
@@ -177,8 +181,10 @@ class _ProfileState extends State<Profile> {
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                "https://i.pinimg.com/originals/5b/0f/5f/5b0f5f508504e143948a6d3595745206.png"),
                             radius: 80,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.amber,
                           ),
                           SizedBox(
                             height: 20,
