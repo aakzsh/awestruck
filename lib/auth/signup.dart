@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:awestruck/constant_widgets/bottom_nav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -9,6 +14,23 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  File _image;
+  String _image1 = "";
+  final picker = ImagePicker();
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (pickedFile != null) {
+        _image1 = pickedFile.path;
+        _image = File(pickedFile.path);
+        print(json.encode(_image1));
+        print("file path...");
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
   String err = "";
   String _email, _pass, _pass2, username;
   @override
@@ -125,6 +147,12 @@ class _SignupState extends State<Signup> {
                     width: w - 40,
                     color: Colors.blue.withOpacity(0.1),
                   ),
+                  SizedBox(),
+                  Container(
+                    child: _image != null
+                        ? Image.file(_image)
+                        : Text('Choose a profile picture'),
+                  ),
                   SizedBox(height: 40),
                   MaterialButton(
                       minWidth: w - 40,
@@ -146,7 +174,7 @@ class _SignupState extends State<Signup> {
                                             .doc(username)
                                             .set({
                                           "level": 1,
-                                          "dob": "2000-01-01-00:00:00",
+                                          "dob": "2000-01-01 00:00:00",
                                           "name": username,
                                           "steps_total": 0,
                                           "email": _email,

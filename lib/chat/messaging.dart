@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 // imp
 import 'package:firebase_core/firebase_core.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class Messaging extends StatefulWidget {
   Messaging(this.roomId, this.status, this.name);
@@ -18,6 +19,10 @@ class Messaging extends StatefulWidget {
 }
 
 class _MessagingState extends State<Messaging> {
+  final HttpLink httpLink = HttpLink(
+    'https://graph.snapchat.com/graphql',
+  );
+
   DatabaseReference _messagesRef;
   DatabaseReference _firebaseRef = FirebaseDatabase(
           databaseURL:
@@ -123,14 +128,19 @@ class _MessagingState extends State<Messaging> {
                               ),
                             ),
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(40),
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              color: Palette().bluebg,
-                              child: Icon(Icons.sticky_note_2_rounded),
+                          InkWell(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                color: Palette().bluebg,
+                                child: Icon(Icons.sticky_note_2_rounded),
+                              ),
                             ),
+                            onTap: () {
+                              sendSticker(context);
+                            },
                           ),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(40),
@@ -264,14 +274,19 @@ class _MessagingState extends State<Messaging> {
                                 ),
                               ),
                             ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                color: Palette().bluebg,
-                                child: Icon(Icons.sticky_note_2_rounded),
+                            InkWell(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  color: Palette().bluebg,
+                                  child: Icon(Icons.sticky_note_2_rounded),
+                                ),
                               ),
+                              onTap: () {
+                                sendSticker(context);
+                              },
                             ),
                             ClipRRect(
                               borderRadius: BorderRadius.circular(40),
@@ -579,6 +594,39 @@ successAurora(context) {
               ),
             ))
           ],
+        );
+      });
+}
+
+sendSticker(context) {
+  return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Palette().bluebg,
+          content: Container(
+            // color: Palette().bluebg.withOpacity(0.8),
+            height: 150,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      child: TextField(
+                        decoration: InputDecoration.collapsed(
+                            hintText: "Search Stickers"),
+                      ),
+                    ),
+                    IconButton(onPressed: () {}, icon: Icon(Icons.search))
+                  ],
+                )
+              ],
+            ),
+          ),
+          actions: [],
         );
       });
 }

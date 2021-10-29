@@ -14,13 +14,30 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  DateTime selectedDate = DateTime.parse("2000-01-01 00:00:00");
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
   String newname, newstatus;
   String name = "name",
       status = "status",
       username = "username",
-      dob = "2000-01-01-00:00:00",
-      dobstr = "Jan 1, 2000",
-      starsign = getZodiacSign(DateTime.now().day, DateTime.now().month);
+      dob = "2000-01-01 00:00:00",
+      dobstr = "Jan 1, 2000";
+
+  List<String> starsign =
+      getZodiacSign(DateTime.now().day, DateTime.now().month);
+
   int level = 1;
   List<Map> friendList = [
     {'name': 'name'}
@@ -242,8 +259,11 @@ class _ProfileState extends State<Profile> {
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Text("Star Sign"),
-                                  Icon(Icons.star, color: Colors.greenAccent),
-                                  Text(starsign)
+                                  Text(
+                                    starsign[1],
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                  Text(starsign[0])
                                 ],
                               ),
                               decoration: BoxDecoration(
@@ -264,8 +284,15 @@ class _ProfileState extends State<Profile> {
                     ),
                     Row(
                       children: <Widget>[
-                        Text("Your Star Map [1st Jan 2000]"),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                        Text(
+                            "Your Star Map [${selectedDate.day}/${selectedDate.month}/${selectedDate.year}]"),
+                        IconButton(
+                            // iconSize: 100,
+                            onPressed: () async {
+                              print("hello");
+                              await _selectDate(context);
+                            },
+                            icon: Icon(Icons.edit)),
                       ],
                     ),
                     SizedBox(
@@ -319,30 +346,30 @@ class _ProfileState extends State<Profile> {
 
 getZodiacSign(int day, int month) {
   if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) {
-    return "capricorn";
+    return ["capricorn", "♑"];
   } else if ((month == 1 && day >= 21) || (month == 2 && day <= 18)) {
-    return "aquarius";
+    return ["aquarius", "♒"];
   } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
-    return "pisces";
+    return ["pisces", "♓"];
   } else if ((month == 3 && day >= 21) || (month == 4 && day <= 20)) {
-    return "aries";
+    return ["aries", "♈"];
   } else if ((month == 4 && day >= 21) || (month == 5 && day <= 20)) {
-    return "taurus";
+    return ["taurus", "♉"];
   } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
-    return "gemini";
+    return ["gemini", "♊"];
   } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
-    return "cancer";
+    return ["cancer", "♋"];
   } else if ((month == 7 && day >= 23) || (month == 8 && day <= 23)) {
-    return "leo";
+    return ["leo", "♌"];
   } else if ((month == 8 && day >= 24) || (month == 9 && day <= 23)) {
-    return "virgo";
+    return ["virgo", "♍"];
   } else if ((month == 9 && day >= 24) || (month == 10 && day <= 23)) {
-    return "libra";
+    return ["libra", "♎"];
   } else if ((month == 10 && day >= 24) || (month == 11 && day <= 22)) {
-    return "scorpio";
+    return ["scorpio", "♏"];
   } else if ((month == 11 && day >= 23) || (month == 12 && day <= 21)) {
-    return "sagittarius";
+    return ["sagittarius", "♐"];
   } else {
-    return "unknown";
+    return ["unknown", "♐"];
   }
 }
