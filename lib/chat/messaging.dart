@@ -30,8 +30,11 @@ class _MessagingState extends State<Messaging> {
   @override
   Widget build(BuildContext context) {
     // final roomId = ModalRoute.of(context).settings.arguments;
-    Stream _messagesStream =
-        _firebaseRef.child(widget.roomId).orderByChild('time').onValue;
+    Stream _messagesStream = _firebaseRef
+        .child(widget.roomId)
+        .orderByChild('time')
+        .limitToLast(50)
+        .onValue;
     print(widget.roomId);
     // getUser(roomId);
     double h = MediaQuery.of(context).size.height;
@@ -109,7 +112,9 @@ class _MessagingState extends State<Messaging> {
                                   final msgData = MsgData(
                                       author: username,
                                       message_body: message_body,
-                                      time: DateTime.now().toString());
+                                      time: DateTime.now().toString(),
+                                      aurora: false,
+                                      sticker: null);
                                   _firebaseRef
                                       .child(widget.roomId)
                                       .push()
@@ -247,7 +252,9 @@ class _MessagingState extends State<Messaging> {
                                     final msgData = MsgData(
                                         author: username,
                                         message_body: message_body,
-                                        time: DateTime.now().toString());
+                                        time: DateTime.now().toString(),
+                                        aurora: false,
+                                        sticker: null);
                                     _firebaseRef
                                         .child(widget.roomId)
                                         .push()
