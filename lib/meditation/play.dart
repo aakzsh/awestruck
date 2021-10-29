@@ -150,7 +150,7 @@ class ControlButtons extends StatelessWidget {
                         width: 64.0,
                         height: 64.0,
                         child: CircularProgressIndicator(
-                          color: Palette().auroraGreen,
+                          backgroundColor: Palette().auroraGreen,
                         ),
                       );
                     } else if (playing != true) {

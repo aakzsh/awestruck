@@ -37,9 +37,24 @@ class _MessagingState extends State<Messaging> {
   @override
   Widget build(BuildContext context) {
     // final roomId = ModalRoute.of(context).settings.arguments;
-    Stream _messagesStream =
-        _firebaseRef.child(widget.roomId).orderByChild('time').onValue;
+    Stream _messagesStream = _firebaseRef
+        .child(widget.roomId)
+        .orderByChild('time')
+        .limitToLast(50)
+        .onValue;
     print(widget.roomId);
+    final _scrollController = ScrollController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 450),
+          curve: Curves.fastOutSlowIn,
+        );
+      }
+    });
+
     // getUser(roomId);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
@@ -116,7 +131,9 @@ class _MessagingState extends State<Messaging> {
                                   final msgData = MsgData(
                                       author: username,
                                       message_body: message_body,
-                                      time: DateTime.now().toString());
+                                      time: DateTime.now().toString(),
+                                      aurora: false,
+                                      sticker: null);
                                   _firebaseRef
                                       .child(widget.roomId)
                                       .push()
@@ -217,6 +234,8 @@ class _MessagingState extends State<Messaging> {
                     Container(
                         height: h - 150,
                         child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: _scrollController,
                             itemCount: item.length,
                             itemBuilder: (context, index) {
                               if (item[index]['author'] == username) {
@@ -262,7 +281,9 @@ class _MessagingState extends State<Messaging> {
                                     final msgData = MsgData(
                                         author: username,
                                         message_body: message_body,
-                                        time: DateTime.now().toString());
+                                        time: DateTime.now().toString(),
+                                        aurora: false,
+                                        sticker: null);
                                     _firebaseRef
                                         .child(widget.roomId)
                                         .push()

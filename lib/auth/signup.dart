@@ -194,6 +194,11 @@ class _SignupState extends State<Signup> {
                                           "status": "panda in the making",
                                           "meditation": 0,
                                           "pfp": _image.readAsString(),
+                                          "prevDay": DateTime.now().toString(),
+                                          "place": {"lat": 40, "lng": 83},
+                                          "totalCoins": 0,
+                                          "totalStepsUntilYesterday": 0,
+                                          "usedCoins": 0
                                         }).then((_) => {
                                                   Navigator.pushReplacement(
                                                       context,

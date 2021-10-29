@@ -128,6 +128,7 @@ class _HomeState extends State<Home> {
           if (snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
             return CircularProgressIndicator(
+              value: 20,
               backgroundColor: Palette().bluebg,
             );
           }

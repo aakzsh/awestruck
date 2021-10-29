@@ -39,7 +39,7 @@ class _WalkHomeState extends State<WalkHome> {
             .get()
             .then((value) => {
                   setState(() {
-                    rSteps = value.data()['steps'];
+                    rSteps = value.data()['steps_total'];
                   })
                 })
             .then((value) {
@@ -52,7 +52,10 @@ class _WalkHomeState extends State<WalkHome> {
         prevDay = DateTime.now();
       }
       //update total steps
-      firestore.collection('users').doc('shroo').update({'steps': event.steps});
+      firestore
+          .collection('users')
+          .doc('shroo')
+          .update({'steps_total': event.steps});
     });
   }
 
