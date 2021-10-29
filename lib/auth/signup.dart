@@ -147,13 +147,25 @@ class _SignupState extends State<Signup> {
                     width: w - 40,
                     color: Colors.blue.withOpacity(0.1),
                   ),
-                  SizedBox(),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     child: _image != null
-                        ? Image.file(_image)
+                        ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: FileImage(
+                              _image,
+                            ))
                         : Text('Choose a profile picture'),
                   ),
                   SizedBox(height: 40),
+                  MaterialButton(
+                    onPressed: () {
+                      getImage();
+                    },
+                    child: Text("Select Image"),
+                  ),
                   MaterialButton(
                       minWidth: w - 40,
                       onPressed: () async {
@@ -181,6 +193,7 @@ class _SignupState extends State<Signup> {
                                           "weekly_steps": [0, 0, 0, 0, 0, 0, 0],
                                           "status": "panda in the making",
                                           "meditation": 0,
+                                          "pfp": _image.readAsString(),
                                           "prevDay": DateTime.now().toString(),
                                           "place": {"lat": 40, "lng": 83},
                                           "totalCoins": 0,
