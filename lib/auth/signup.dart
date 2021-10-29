@@ -193,7 +193,7 @@ class _SignupState extends State<Signup> {
                                           "weekly_steps": [0, 0, 0, 0, 0, 0, 0],
                                           "status": "panda in the making",
                                           "meditation": 0,
-                                          "pfp": _image.readAsString(),
+                                          // "pfp": _image.readAsString(),
                                           "prevDay": DateTime.now().toString(),
                                           "place": {"lat": 40, "lng": 83},
                                           "totalCoins": 0,
