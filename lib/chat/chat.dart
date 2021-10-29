@@ -1,5 +1,6 @@
 import 'package:awestruck/chat/messaging.dart';
 import 'package:awestruck/chat/pending_req.dart';
+import 'package:awestruck/chat/query.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
 import 'package:awestruck/profile/profile.dart';
@@ -146,9 +147,17 @@ class _ChatState extends State<Chat> {
                             );
                           });
                     },
-                    child: Text(
-                      "Add Friends",
-                      style: TextStyle(color: Palette().bluebg),
+                    child: MaterialButton(
+                      child: Text(
+                        "Add Friends",
+                        style: TextStyle(color: Palette().bluebg),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StickerQuery()));
+                      },
                     ),
                   ),
                 ],

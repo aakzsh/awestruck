@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 // imp
 import 'package:firebase_core/firebase_core.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_flutter/graphql_flutter.dart' as gq;
 
 class Messaging extends StatefulWidget {
   Messaging(this.roomId, this.status, this.name);
@@ -19,10 +19,6 @@ class Messaging extends StatefulWidget {
 }
 
 class _MessagingState extends State<Messaging> {
-  final HttpLink httpLink = HttpLink(
-    'https://graph.snapchat.com/graphql',
-  );
-
   DatabaseReference _messagesRef;
   DatabaseReference _firebaseRef = FirebaseDatabase(
           databaseURL:
@@ -156,7 +152,7 @@ class _MessagingState extends State<Messaging> {
                               ),
                             ),
                             onTap: () {
-                              sendSticker(context);
+                              sendSticker(_firebaseRef, widget, context);
                             },
                           ),
                           ClipRRect(
@@ -239,15 +235,29 @@ class _MessagingState extends State<Messaging> {
                             itemCount: item.length,
                             itemBuilder: (context, index) {
                               if (item[index]['author'] == username) {
-                                return sendText(
-                                    item[index]['author'],
-                                    item[index]['time'],
-                                    item[index]['message_body']);
+                                if (item[index]['message_body'] != null) {
+                                  return sendText(
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['message_body']);
+                                } else {
+                                  return stickerText(
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['sticker']);
+                                }
                               } else if (item[index]['author'] == widget.name) {
-                                return receiveText(
-                                    item[index]['author'],
-                                    item[index]['time'],
-                                    item[index]['message_body']);
+                                if (item[index]['message_body'] != null) {
+                                  return sendText(
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['message_body']);
+                                } else {
+                                  return stickerText(
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['sticker']);
+                                }
                               } else {
                                 return Text('hehe');
                               }
@@ -306,7 +316,7 @@ class _MessagingState extends State<Messaging> {
                                 ),
                               ),
                               onTap: () {
-                                sendSticker(context);
+                                sendSticker(_firebaseRef, widget, context);
                               },
                             ),
                             ClipRRect(
@@ -342,6 +352,37 @@ class _MessagingState extends State<Messaging> {
       },
     ));
   }
+}
+
+stickerText(name, time, url) {
+  return Padding(
+    padding: EdgeInsets.all(10),
+    child: Container(
+      color: Colors.grey.withOpacity(0.1),
+      child: Padding(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(name + "    "),
+                Text(time,
+                    style: TextStyle(fontSize: 12, color: Colors.white60))
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Image.network(
+              url,
+              width: 120,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 sendText(name, datetime, message) {
@@ -619,7 +660,28 @@ successAurora(context) {
       });
 }
 
-sendSticker(context) {
+sendSticker(_firebaseref, widget, context) {
+  String stickerText = "happy";
+  final GET_STICKERS = ''' 
+    query SearchStickerSample {
+      sticker {
+        searchStickers(
+          req:{
+            searchStickersParams:{searchText: "happy", numberResults: 2},
+            stickerUserContext:{countryCode: US, localTimeZoneUTCOffsetMinutes: 2,locale: EN_US}
+          }){
+          stickerResults {
+            items {
+              itemType
+              id
+              pngURL
+              thumbnailURL
+            }
+          }
+        }
+      }
+    }
+  ''';
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -643,6 +705,62 @@ sendSticker(context) {
                     ),
                     IconButton(onPressed: () {}, icon: Icon(Icons.search))
                   ],
+                ),
+                gq.Query(
+                  options: gq.QueryOptions(
+                    document: gq.gql(GET_STICKERS),
+                  ),
+                  builder: (
+                    gq.QueryResult result, {
+                    VoidCallback refetch,
+                    gq.FetchMore fetchMore,
+                  }) {
+                    if (result.hasException) {
+                      return Text(result.exception.toString());
+                    }
+
+                    if (result.isLoading) {
+                      return Text('Loading');
+                    }
+
+                    List repositories = result.data['sticker']['searchStickers']
+                        ['stickerResults']['items'];
+
+                    print(
+                        "${repositories[0]['pngURL']} ============================");
+                    String url1 = repositories[0]['pngURL'] + ".png";
+                    String url2 = repositories[1]['pngURL'] + ".png";
+                    // return Text("hello");
+                    // return Image.network(
+                    //   url,
+                    //   height: 10,
+                    //   width: 10,
+                    // );
+
+                    return Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        InkWell(
+                          child: Image.network(url1, height: 50),
+                          onTap: () {
+                            final msgData = MsgData(
+                                author: username,
+                                message_body: null,
+                                time: DateTime.now().toString(),
+                                aurora: false,
+                                sticker: url1);
+                            _firebaseref
+                                .child(widget.roomId)
+                                .push()
+                                .set(msgData.toMap())
+                                .then((value) {});
+                          },
+                        ),
+                        Image.network(url2, height: 50)
+                      ],
+                    ));
+                  },
                 )
               ],
             ),
