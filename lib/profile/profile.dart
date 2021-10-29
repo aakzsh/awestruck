@@ -22,6 +22,9 @@ class _ProfileState extends State<Profile> {
       dobstr = "Jan 1, 2000",
       starsign = getZodiacSign(DateTime.now().day, DateTime.now().month);
   int level = 1;
+  List<Map> friendList = [
+    {'name': 'name'}
+  ];
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -44,10 +47,23 @@ class _ProfileState extends State<Profile> {
             });
   }
 
+  getFriends() {
+    FirebaseFirestore.instance
+        .collection('friends')
+        .doc(username)
+        .get()
+        .then((value) => {
+              setState(() {
+                friendList = value.data()['friends'];
+              }),
+            });
+  }
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     getData();
+    getFriends();
     return Scaffold(
         backgroundColor: Palette().bluebg,
         body: Container(
@@ -202,7 +218,7 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Friends"),
                                   Text(
-                                    "8",
+                                    friendList.length.toString(),
                                     style: TextStyle(
                                         fontSize: 50,
                                         color: Palette().auroraGreen,

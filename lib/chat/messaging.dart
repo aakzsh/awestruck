@@ -1,4 +1,5 @@
 import 'package:awestruck/chat/msgData.dart';
+import 'package:awestruck/chat/newAurora.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,10 @@ class _MessagingState extends State<Messaging> {
                               color: Palette().bluebg,
                               child: IconButton(
                                 onPressed: () {
-                                  newAurora(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NewAurora()));
                                 },
                                 icon: Icon(Icons.lock),
                                 color: Palette().auroraGreen,
@@ -201,7 +205,7 @@ class _MessagingState extends State<Messaging> {
                           ),
                         )),
                     Container(
-                        height: h - 220,
+                        height: h - 150,
                         child: ListView.builder(
                             itemCount: item.length,
                             itemBuilder: (context, index) {
@@ -277,7 +281,10 @@ class _MessagingState extends State<Messaging> {
                                 color: Palette().bluebg,
                                 child: IconButton(
                                   onPressed: () {
-                                    newAurora(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => NewAurora()));
                                   },
                                   icon: Icon(Icons.lock),
                                   color: Palette().auroraGreen,
@@ -356,105 +363,105 @@ receiveText(name, datetime, message) {
       ));
 }
 
-newAurora(context) {
-  String lmao = "";
-  String content = "";
-  return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Palette().bluebg,
-          title: Text("New Aurora"),
-          content: Container(
-            // color: Palette().bluebg.withOpacity(0.8),
-            height: 150,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    height: 300,
-                    width: 200,
-                    child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: TextField(
-                          onChanged: (text) {
-                            lmao = text;
-                          },
-                          maxLines: 10,
-                        ))),
-                MaterialButton(
-                  onPressed: () {
-                    content = stringToBase64.encode(lmao);
-                    sendEncAurora(context, content);
-                  },
-                  child: Text("Encrypt"),
-                  color: Palette().auroraGreen,
-                )
-              ],
-            ),
-          ),
-          actions: [
-            Center(
-                child: MaterialButton(
-              minWidth: 150,
-              color: Palette().auroraGreen,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Tap to View",
-                style: TextStyle(color: Palette().bluebg),
-              ),
-            ))
-          ],
-        );
-      });
-}
+// newAurora(context) {
+//   String lmao = "";
+//   String content = "";
+//   return showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           backgroundColor: Palette().bluebg,
+//           title: Text("New Aurora"),
+//           content: Container(
+//             // color: Palette().bluebg.withOpacity(0.8),
+//             height: 150,
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: <Widget>[
+//                 Container(
+//                     height: 300,
+//                     width: 200,
+//                     child: Padding(
+//                         padding: EdgeInsets.all(20),
+//                         child: TextField(
+//                           onChanged: (text) {
+//                             lmao = text;
+//                           },
+//                           maxLines: 10,
+//                         ))),
+//                 MaterialButton(
+//                   onPressed: () {
+//                     content = stringToBase64.encode(lmao);
+//                     sendEncAurora(context, content);
+//                   },
+//                   child: Text("Encrypt"),
+//                   color: Palette().auroraGreen,
+//                 )
+//               ],
+//             ),
+//           ),
+//           actions: [
+//             Center(
+//                 child: MaterialButton(
+//               minWidth: 150,
+//               color: Palette().auroraGreen,
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text(
+//                 "Tap to View",
+//                 style: TextStyle(color: Palette().bluebg),
+//               ),
+//             ))
+//           ],
+//         );
+//       });
+// }
 
 Codec<String, String> stringToBase64 = utf8.fuse(base64);
-sendEncAurora(context, msg) {
-  return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Palette().bluebg,
-          title: Text("Result"),
-          content: Container(
-            // color: Palette().bluebg.withOpacity(0.8),
-            height: 150,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                    height: 300,
-                    width: 200,
-                    child:
-                        Padding(padding: EdgeInsets.all(20), child: Text(msg))),
-                MaterialButton(
-                  onPressed: () {},
-                  child: Text("Send"),
-                  color: Palette().auroraGreen,
-                )
-              ],
-            ),
-          ),
-          actions: [
-            Center(
-                child: MaterialButton(
-              minWidth: 150,
-              color: Palette().auroraGreen,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Tap to View",
-                style: TextStyle(color: Palette().bluebg),
-              ),
-            ))
-          ],
-        );
-      });
-}
+// sendEncAurora(context, msg) {
+//   return showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           backgroundColor: Palette().bluebg,
+//           title: Text("Result"),
+//           content: Container(
+//             // color: Palette().bluebg.withOpacity(0.8),
+//             height: 150,
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: <Widget>[
+//                 Container(
+//                     height: 300,
+//                     width: 200,
+//                     child:
+//                         Padding(padding: EdgeInsets.all(20), child: Text(msg))),
+//                 MaterialButton(
+//                   onPressed: () {},
+//                   child: Text("Send"),
+//                   color: Palette().auroraGreen,
+//                 )
+//               ],
+//             ),
+//           ),
+//           actions: [
+//             Center(
+//                 child: MaterialButton(
+//               minWidth: 150,
+//               color: Palette().auroraGreen,
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text(
+//                 "Tap to View",
+//                 style: TextStyle(color: Palette().bluebg),
+//               ),
+//             ))
+//           ],
+//         );
+//       });
+// }
 
 auroraText(context) {
   return Padding(
