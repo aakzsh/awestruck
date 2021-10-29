@@ -43,6 +43,18 @@ class _MessagingState extends State<Messaging> {
         .limitToLast(50)
         .onValue;
     print(widget.roomId);
+    final _scrollController = ScrollController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 450),
+          curve: Curves.fastOutSlowIn,
+        );
+      }
+    });
+
     // getUser(roomId);
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
@@ -222,6 +234,8 @@ class _MessagingState extends State<Messaging> {
                     Container(
                         height: h - 150,
                         child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: _scrollController,
                             itemCount: item.length,
                             itemBuilder: (context, index) {
                               if (item[index]['author'] == username) {

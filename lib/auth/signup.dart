@@ -181,6 +181,11 @@ class _SignupState extends State<Signup> {
                                           "weekly_steps": [0, 0, 0, 0, 0, 0, 0],
                                           "status": "panda in the making",
                                           "meditation": 0,
+                                          "prevDay": DateTime.now().toString(),
+                                          "place": {"lat": 40, "lng": 83},
+                                          "totalCoins": 0,
+                                          "totalStepsUntilYesterday": 0,
+                                          "usedCoins": 0
                                         }).then((_) => {
                                                   Navigator.pushReplacement(
                                                       context,
