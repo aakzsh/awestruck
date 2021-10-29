@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:awestruck/home.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -169,7 +170,8 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Level"),
                                   Text(
-                                    level.toString(),
+                                    ((steps_total / 100).floor() + 1)
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 50,
                                         color: Colors.pinkAccent,
@@ -198,10 +200,13 @@ class _ProfileState extends State<Profile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Text("Status"),
-                                  Icon(
-                                    Icons.online_prediction,
-                                    color: Colors.green,
+                                  Text("Friends"),
+                                  Text(
+                                    "8",
+                                    style: TextStyle(
+                                        fontSize: 50,
+                                        color: Palette().auroraGreen,
+                                        fontWeight: FontWeight.bold),
                                   )
                                 ],
                               ),

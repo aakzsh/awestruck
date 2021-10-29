@@ -9,7 +9,11 @@ import 'package:after_layout/after_layout.dart';
 //firebase vars
 String email, name, status, username;
 String prevDay, dob;
-int meditation, steps_total, totalStepsUntilYesterday, totalCoins, usedCoins;
+int meditation,
+    steps_total = 0,
+    totalStepsUntilYesterday,
+    totalCoins,
+    usedCoins;
 Map place;
 List weekly_steps;
 Stream documentStream;
