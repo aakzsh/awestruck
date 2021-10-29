@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,21 +18,39 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  final token =
+      'eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjM0ODcyODU1LCJzdWIiOiJlYTUxZWJjYy0xNWM1LTQzNTUtOWY1Mi1iNTViYzkxMGY3MzF-U1RBR0lOR34wNjI0MWQyZS1hNTU1LTQxZDAtYmRjNC1lYjYyOTdkOGRkNTkifQ.V7vc3HGR7Od8wRKEV4cS6kuInGn037onaGquQ7c60AI';
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          // primaryColor: Colors.pink,
-          brightness: Brightness.dark,
-          textTheme: GoogleFonts.poppinsTextTheme(
-            Theme.of(context)
-                .textTheme
-                .apply(bodyColor: Colors.white, displayColor: Colors.white),
-          ),
+    final HttpLink httpLink = HttpLink('https://graph.snapchat.com/graphql',
+        defaultHeaders: {'Authorization': "Bearer $token"});
+
+    ValueNotifier<GraphQLClient> client = ValueNotifier(
+      GraphQLClient(
+        link: httpLink,
+        cache: GraphQLCache(
+          store: InMemoryStore(),
         ),
-        title: "Awestruck",
-        home: Check());
+      ),
+    );
+
+    return GraphQLProvider(
+      client: client,
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // primaryColor: Colors.pink,
+            brightness: Brightness.dark,
+            textTheme: GoogleFonts.poppinsTextTheme(
+              Theme.of(context)
+                  .textTheme
+                  .apply(bodyColor: Colors.white, displayColor: Colors.white),
+            ),
+          ),
+          title: "Awestruck",
+          home: Check()),
+    );
   }
 }
 

@@ -49,7 +49,7 @@ dependencies:
   firebase_storage:
   firebase_analytics: ^5.0.6
   image_picker:
-  graphql_flutter: ^5.0.0
+  graphql_flutter:
 
 dev_dependencies:
   flutter_test:
