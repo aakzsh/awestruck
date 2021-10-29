@@ -46,7 +46,10 @@ dependencies:
   firebase_database: 
   geocoder: ^0.2.1
   activity_ring: ^0.2.0
-
+  firebase_storage:
+  firebase_analytics: ^5.0.6
+  image_picker:
+  graphql_flutter: ^5.0.0
 
 dev_dependencies:
   flutter_test:

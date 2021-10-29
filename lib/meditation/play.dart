@@ -17,6 +17,9 @@ class Play extends StatefulWidget {
   _PlayState createState() => _PlayState();
 }
 
+String musicUrl =
+    "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3";
+
 class _PlayState extends State<Play> with WidgetsBindingObserver {
   final _player = AudioPlayer();
 
@@ -42,8 +45,7 @@ class _PlayState extends State<Play> with WidgetsBindingObserver {
     });
     // Try to load audio from a source and catch any errors.
     try {
-      await _player.setAudioSource(AudioSource.uri(Uri.parse(
-          "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")));
+      await _player.setAudioSource(AudioSource.uri(Uri.parse(musicUrl)));
     } catch (e) {
       print("Error loading audio source: $e");
     }
@@ -126,12 +128,13 @@ class ControlButtons extends StatelessWidget {
             // Opens volume slider dialog
             Ring(
               percent: 100,
-              color: RingColorScheme(ringColor: Colors.deepPurple[200]),
+              color: RingColorScheme(
+                  ringColor: Palette().auroraGreen.withOpacity(0.8)),
               radius: 90,
               width: 5,
               child: Ring(
                 percent: 100,
-                color: RingColorScheme(ringColor: Colors.purple[200]),
+                color: RingColorScheme(ringColor: Palette().auroraGreen),
                 radius: 80,
                 width: 5,
                 child: StreamBuilder<PlayerState>(
@@ -146,23 +149,31 @@ class ControlButtons extends StatelessWidget {
                         margin: EdgeInsets.all(8.0),
                         width: 64.0,
                         height: 64.0,
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          color: Palette().auroraGreen,
+                        ),
                       );
                     } else if (playing != true) {
                       return IconButton(
-                        icon: Icon(Icons.play_arrow),
+                        icon: Icon(
+                          Icons.play_arrow,
+                          color: Palette().auroraGreen,
+                        ),
                         iconSize: 64.0,
                         onPressed: player.play,
                       );
                     } else if (processingState != ProcessingState.completed) {
                       return IconButton(
-                        icon: Icon(Icons.pause),
+                        icon: Icon(
+                          Icons.pause,
+                          color: Palette().auroraGreen,
+                        ),
                         iconSize: 64.0,
                         onPressed: player.pause,
                       );
                     } else {
                       return IconButton(
-                        icon: Icon(Icons.replay),
+                        icon: Icon(Icons.replay, color: Palette().auroraGreen),
                         iconSize: 64.0,
                         onPressed: () => player.seek(Duration.zero),
                       );
@@ -221,7 +232,7 @@ class _SeekBarState extends State<SeekBar> {
             child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(9),
-                  color: Colors.purple[200].withOpacity(0.5),
+                  color: Palette().auroraGreen.withOpacity(0.3),
                 ),
                 width: w - 60,
                 height: 80,

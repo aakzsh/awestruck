@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:awestruck/home.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -13,14 +14,42 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  DateTime selectedDate = DateTime.parse("2000-01-01 00:00:00");
+  String stringParse = "2000-01-01-00:00:00";
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1950, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        stringParse = selectedDate.toString().split(' ')[0] +
+            "-" +
+            selectedDate.toString().split(' ')[1];
+      });
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(username)
+          .update({'dob': selectedDate.toString()});
+    }
+  }
+
   String newname, newstatus;
   String name = "name",
       status = "status",
       username = "username",
-      dob = "2000-01-01-00:00:00",
-      dobstr = "Jan 1, 2000",
-      starsign = getZodiacSign(DateTime.now().day, DateTime.now().month);
+      dob = "2000-01-01 00:00:00",
+      dobstr = "Jan 1, 2000";
+
+  List<String> starsign =
+      getZodiacSign(DateTime.now().day, DateTime.now().month);
+
   int level = 1;
+  List<Map> friendList = [
+    {'name': 'name'}
+  ];
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -38,8 +67,23 @@ class _ProfileState extends State<Profile> {
                         setState(() {
                           name = value.data()['name'];
                           status = value.data()['status'];
+                          dob = value.data()['dob'];
+                          starsign = getZodiacSign(DateTime.parse(dob).day,
+                              DateTime.parse(dob).month);
                         })
                       })
+            });
+  }
+
+  getFriends() {
+    FirebaseFirestore.instance
+        .collection('friends')
+        .doc(username)
+        .get()
+        .then((value) => {
+              setState(() {
+                friendList = value.data()['friends'];
+              }),
             });
   }
 
@@ -47,6 +91,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     getData();
+    getFriends();
     return Scaffold(
         backgroundColor: Palette().bluebg,
         body: Container(
@@ -169,7 +214,8 @@ class _ProfileState extends State<Profile> {
                                 children: <Widget>[
                                   Text("Level"),
                                   Text(
-                                    level.toString(),
+                                    ((steps_total / 100).floor() + 1)
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 50,
                                         color: Colors.pinkAccent,
@@ -198,10 +244,13 @@ class _ProfileState extends State<Profile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
-                                  Text("Status"),
-                                  Icon(
-                                    Icons.online_prediction,
-                                    color: Colors.green,
+                                  Text("Friends"),
+                                  Text(
+                                    friendList.length.toString(),
+                                    style: TextStyle(
+                                        fontSize: 50,
+                                        color: Palette().auroraGreen,
+                                        fontWeight: FontWeight.bold),
                                   )
                                 ],
                               ),
@@ -221,8 +270,11 @@ class _ProfileState extends State<Profile> {
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   Text("Star Sign"),
-                                  Icon(Icons.star, color: Colors.greenAccent),
-                                  Text(starsign)
+                                  Text(
+                                    starsign[1],
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                  Text(starsign[0])
                                 ],
                               ),
                               decoration: BoxDecoration(
@@ -243,8 +295,15 @@ class _ProfileState extends State<Profile> {
                     ),
                     Row(
                       children: <Widget>[
-                        Text("Your Star Map [1st Jan 2000]"),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                        Text(
+                            "Your Star Map [${DateTime.parse(dob).day}/${DateTime.parse(dob).month}/${DateTime.parse(dob).year}]"),
+                        IconButton(
+                            // iconSize: 100,
+                            onPressed: () async {
+                              print("hello");
+                              await _selectDate(context);
+                            },
+                            icon: Icon(Icons.edit)),
                       ],
                     ),
                     SizedBox(
@@ -253,7 +312,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       child: WebView(
                         initialUrl:
-                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=now",
+                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=$stringParse",
                         javascriptMode: JavascriptMode.unrestricted,
                       ),
                       width: w - 40,
@@ -298,30 +357,30 @@ class _ProfileState extends State<Profile> {
 
 getZodiacSign(int day, int month) {
   if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) {
-    return "capricorn";
+    return ["capricorn", "♑"];
   } else if ((month == 1 && day >= 21) || (month == 2 && day <= 18)) {
-    return "aquarius";
+    return ["aquarius", "♒"];
   } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
-    return "pisces";
+    return ["pisces", "♓"];
   } else if ((month == 3 && day >= 21) || (month == 4 && day <= 20)) {
-    return "aries";
+    return ["aries", "♈"];
   } else if ((month == 4 && day >= 21) || (month == 5 && day <= 20)) {
-    return "taurus";
+    return ["taurus", "♉"];
   } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
-    return "gemini";
+    return ["gemini", "♊"];
   } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
-    return "cancer";
+    return ["cancer", "♋"];
   } else if ((month == 7 && day >= 23) || (month == 8 && day <= 23)) {
-    return "leo";
+    return ["leo", "♌"];
   } else if ((month == 8 && day >= 24) || (month == 9 && day <= 23)) {
-    return "virgo";
+    return ["virgo", "♍"];
   } else if ((month == 9 && day >= 24) || (month == 10 && day <= 23)) {
-    return "libra";
+    return ["libra", "♎"];
   } else if ((month == 10 && day >= 24) || (month == 11 && day <= 22)) {
-    return "scorpio";
+    return ["scorpio", "♏"];
   } else if ((month == 11 && day >= 23) || (month == 12 && day <= 21)) {
-    return "sagittarius";
+    return ["sagittarius", "♐"];
   } else {
-    return "unknown";
+    return ["unknown", "♐"];
   }
 }

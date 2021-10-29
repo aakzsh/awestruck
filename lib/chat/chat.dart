@@ -207,14 +207,12 @@ friendTile(name, status, context) {
           radius: 20,
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Messaging(roomId, status, name),
-                settings: RouteSettings(
-                    // arguments: {roomId: roomId, status: status},
-                    ),
-              ));
+          Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+            builder: (context) => Messaging(roomId, status, name),
+            settings: RouteSettings(
+                // arguments: {roomId: roomId, status: status},
+                ),
+          ));
         },
       ));
 }
