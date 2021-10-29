@@ -15,17 +15,25 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   DateTime selectedDate = DateTime.parse("2000-01-01 00:00:00");
-
+  String stringParse = "2000-01-01-00:00:00";
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate)
+        firstDate: DateTime(1950, 1),
+        lastDate: DateTime(2100));
+    if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        stringParse = selectedDate.toString().split(' ')[0] +
+            "-" +
+            selectedDate.toString().split(' ')[1];
       });
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(username)
+          .update({'dob': selectedDate.toString()});
+    }
   }
 
   String newname, newstatus;
@@ -59,6 +67,9 @@ class _ProfileState extends State<Profile> {
                         setState(() {
                           name = value.data()['name'];
                           status = value.data()['status'];
+                          dob = value.data()['dob'];
+                          starsign = getZodiacSign(DateTime.parse(dob).day,
+                              DateTime.parse(dob).month);
                         })
                       })
             });
@@ -285,7 +296,7 @@ class _ProfileState extends State<Profile> {
                     Row(
                       children: <Widget>[
                         Text(
-                            "Your Star Map [${selectedDate.day}/${selectedDate.month}/${selectedDate.year}]"),
+                            "Your Star Map [${DateTime.parse(dob).day}/${DateTime.parse(dob).month}/${DateTime.parse(dob).year}]"),
                         IconButton(
                             // iconSize: 100,
                             onPressed: () async {
@@ -301,7 +312,7 @@ class _ProfileState extends State<Profile> {
                     Container(
                       child: WebView(
                         initialUrl:
-                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=now",
+                            "https://nightsky-api.herokuapp.com/night?code=general&&lat=28.5355&&lng=77.3910&&time=$stringParse",
                         javascriptMode: JavascriptMode.unrestricted,
                       ),
                       width: w - 40,
