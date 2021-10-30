@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:awestruck/auth/login.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
@@ -14,6 +15,8 @@ class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
+
+String pfpurl = "";
 
 class _ProfileState extends State<Profile> {
   DateTime selectedDate = DateTime.parse("2000-01-01 00:00:00");
@@ -52,7 +55,7 @@ class _ProfileState extends State<Profile> {
   List<Map> friendList = [
     {'name': 'name'}
   ];
-  // String pfp = "";
+
   getData() {
     FirebaseFirestore.instance
         .collection('userids')
@@ -71,6 +74,7 @@ class _ProfileState extends State<Profile> {
                           // pfp = value.data()['pfp'];
                           name = value.data()['name'];
                           status = value.data()['status'];
+                          // pfpurl = status = value.data()['pfp'];
                           dob = value.data()['dob'];
                           starsign = getZodiacSign(DateTime.parse(dob).day,
                               DateTime.parse(dob).month);
@@ -91,6 +95,7 @@ class _ProfileState extends State<Profile> {
             });
   }
 
+  Uint8List lmaoo = base64Decode(pfpurl);
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -181,10 +186,9 @@ class _ProfileState extends State<Profile> {
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                "https://i.pinimg.com/originals/5b/0f/5f/5b0f5f508504e143948a6d3595745206.png"),
+                            backgroundImage: MemoryImage(lmaoo),
                             radius: 80,
-                            backgroundColor: Colors.amber,
+                            // backgroundColor: Colors.amber,
                           ),
                           SizedBox(
                             height: 20,

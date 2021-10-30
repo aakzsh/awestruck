@@ -12,13 +12,13 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:activity_ring/activity_ring.dart';
 
+String musicUrl =
+    "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3";
+
 class Play extends StatefulWidget {
   @override
   _PlayState createState() => _PlayState();
 }
-
-String musicUrl =
-    "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3";
 
 class _PlayState extends State<Play> with WidgetsBindingObserver {
   final _player = AudioPlayer();

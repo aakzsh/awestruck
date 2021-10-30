@@ -32,7 +32,7 @@ class _GazeState extends State<Gaze> {
   _fetchImage() async {
     FirebaseFirestore.instance
         .collection("room")
-        .doc("HEHEHE")
+        .doc(UniversalCode.toString())
         .get()
         .then((value) => {
               setState(() {
@@ -65,11 +65,11 @@ class _GazeState extends State<Gaze> {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
         body: Container(
-            color: Colors.white,
+            color: Color.fromRGBO(25, 29, 41, 1),
             child: Stack(
               children: <Widget>[
                 Container(
-                    color: Colors.white,
+                    color: Color.fromRGBO(25, 29, 41, 1),
                     height: h,
                     width: w,
                     child: Panorama(
@@ -120,7 +120,8 @@ class _GazeState extends State<Gaze> {
                             height: 20,
                           ),
                           ListTile(
-                              leading: Text("Currently Viewing\n" + yourCity),
+                              leading:
+                                  Text("Currently Viewing\n" + city(yourCity)),
                               title: SizedBox(),
                               trailing: Container(
                                 width: 200,
@@ -185,5 +186,16 @@ class _GazeState extends State<Gaze> {
                 )
               ],
             )));
+  }
+}
+
+city(String yourCity) {
+  if (yourCity.length > 20) {
+    List<String> dummy = yourCity.split(",");
+    int len = dummy.length;
+    return dummy[len - 3] + dummy[len - 2] + dummy[len - 1];
+    // return;
+  } else {
+    return yourCity;
   }
 }

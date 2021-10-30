@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:awestruck/constant_widgets/bottom_nav.dart';
+import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,23 @@ class _SignupState extends State<Signup> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 30))),
+                  Container(
+                    child: _image != null
+                        ? CircleAvatar(
+                            radius: 50,
+                            backgroundImage: FileImage(
+                              _image,
+                            ))
+                        : CircleAvatar(
+                            radius: 50, backgroundColor: Palette().auroraGreen),
+                  ),
+                  SizedBox(height: 10),
+                  MaterialButton(
+                    onPressed: () {
+                      getImage();
+                    },
+                    child: Text("Select Image"),
+                  ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -148,27 +166,13 @@ class _SignupState extends State<Signup> {
                     color: Colors.blue.withOpacity(0.1),
                   ),
                   SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    child: _image != null
-                        ? CircleAvatar(
-                            radius: 50,
-                            backgroundImage: FileImage(
-                              _image,
-                            ))
-                        : Text('Choose a profile picture'),
-                  ),
-                  SizedBox(height: 40),
-                  MaterialButton(
-                    onPressed: () {
-                      getImage();
-                    },
-                    child: Text("Select Image"),
+                    height: 30,
                   ),
                   MaterialButton(
                       minWidth: w - 40,
                       onPressed: () async {
+                        var bytes = File(_image.path).readAsBytesSync();
+                        String base64Image = base64Encode(bytes);
                         if (_pass == _pass2) {
                           await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
@@ -193,6 +197,7 @@ class _SignupState extends State<Signup> {
                                           "weekly_steps": [0, 0, 0, 0, 0, 0, 0],
                                           "status": "panda in the making",
                                           "meditation": 0,
+                                          "pfp": base64Image.toString(),
                                           // "pfp": _image.readAsString(),
                                           "prevDay": DateTime.now().toString(),
                                           "place": {"lat": 40, "lng": 83},

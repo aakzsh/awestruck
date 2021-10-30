@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:particles_flutter/particles_flutter.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CreateRoom extends StatefulWidget {
   @override
@@ -197,6 +198,10 @@ class _CreateRoomState extends State<CreateRoom> {
                               borderRadius: BorderRadius.circular(10)),
                           color: Color.fromRGBO(3, 202, 164, 1),
                           onPressed: () {
+                            setState(() {
+                              lat = 19.0760;
+                              lng = 72.8777;
+                            });
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -211,8 +216,17 @@ class _CreateRoomState extends State<CreateRoom> {
                                   color: Palette().bluebg),
                             ),
                           ))),
-                      SizedBox(
+                      // SizedBox(
+                      //   height: 100,
+                      // ),
+                      Container(
                         height: 100,
+                        child: WebView(
+                          debuggingEnabled: true,
+                          javascriptMode: JavascriptMode.unrestricted,
+                          initialUrl:
+                              "https://nightsky-api.herokuapp.com/night?code=$UniversalCode&&lat=28.5355&&lng=77.3910&&time=now",
+                        ),
                       )
                     ],
                   )
