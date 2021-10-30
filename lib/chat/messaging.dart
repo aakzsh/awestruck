@@ -1,3 +1,4 @@
+import 'package:awestruck/chat/decrypt.dart';
 import 'package:awestruck/chat/msgData.dart';
 import 'package:awestruck/chat/newAurora.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
@@ -5,6 +6,7 @@ import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // imp
 import 'package:firebase_core/firebase_core.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gq;
@@ -314,7 +316,8 @@ class _MessagingState extends State<Messaging> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => NewAurora()));
+                                          builder: (context) =>
+                                              NewAurora(widget.roomId)));
                                 },
                                 icon: Icon(Icons.lock),
                                 color: Palette().auroraGreen,
@@ -383,7 +386,16 @@ class _MessagingState extends State<Messaging> {
                             itemCount: item.length,
                             itemBuilder: (context, index) {
                               if (item[index]['author'] == username) {
-                                if (item[index]['message_body'] != null) {
+                                if (item[index]['aurora'] == true) {
+                                  print(item[index]);
+                                  return auroraText(
+                                      item[index]['key'],
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['message_body'],
+                                      context);
+                                } else if (item[index]['message_body'] !=
+                                    null) {
                                   return sendText(
                                       item[index]['author'],
                                       item[index]['time'],
@@ -395,7 +407,16 @@ class _MessagingState extends State<Messaging> {
                                       item[index]['sticker']);
                                 }
                               } else if (item[index]['author'] == widget.name) {
-                                if (item[index]['message_body'] != null) {
+                                if (item[index]['aurora'] == true) {
+                                  print(item[index]);
+                                  return auroraText(
+                                      item[index]['key'],
+                                      item[index]['author'],
+                                      item[index]['time'],
+                                      item[index]['message_body'],
+                                      context);
+                                } else if (item[index]['message_body'] !=
+                                    null) {
                                   return receiveText(
                                       item[index]['author'],
                                       item[index]['time'],
@@ -478,7 +499,8 @@ class _MessagingState extends State<Messaging> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => NewAurora()));
+                                            builder: (context) =>
+                                                NewAurora(widget.roomId)));
                                   },
                                   icon: Icon(Icons.lock),
                                   color: Palette().auroraGreen,
@@ -688,7 +710,13 @@ Codec<String, String> stringToBase64 = utf8.fuse(base64);
 //       });
 // }
 
-auroraText(context) {
+auroraText(
+  id,
+  name,
+  time,
+  msg,
+  context,
+) {
   return Padding(
     padding: EdgeInsets.all(10),
     child: Container(
@@ -697,9 +725,9 @@ auroraText(context) {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Sent an aurora"),
+              Text("Sent an aurora "),
               Text(
-                "9:50",
+                time.toString().substring(0, 16),
                 style: TextStyle(fontSize: 12, color: Colors.white54),
               )
             ],
@@ -707,7 +735,28 @@ auroraText(context) {
           subtitle: MaterialButton(
             color: Colors.blue.withOpacity(0.2),
             onPressed: () {
-              successAurora(context);
+              //check if enough coins
+              FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(username)
+                  .get()
+                  .then((value) {
+                totalCoins = value.data()['totalCoins'];
+
+                usedCoins = value.data()['usedCoins'];
+
+                int coins = totalCoins - usedCoins;
+                int used = usedCoins + 100;
+                if (coins >= 100) {
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(username)
+                      .update({'usedCoins': used});
+                  successAurora(context, time, name, msg);
+                } else {
+                  nonsuccessAurora(context, time, name, msg);
+                }
+              });
             },
             child: Text("Tap to view"),
           ),
@@ -726,7 +775,7 @@ auroraText(context) {
   );
 }
 
-nonsuccessAurora(context) {
+nonsuccessAurora(context, time, name, msg) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -734,11 +783,11 @@ nonsuccessAurora(context) {
           backgroundColor: Palette().bluebg,
           content: Container(
             // color: Palette().bluebg.withOpacity(0.8),
-            height: 150,
+            height: 250,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Image.asset("images/sad_neptune.png", height: 100, width: 100),
+                Image.asset("images/sed_neptune.png", height: 100, width: 100),
                 Text("Nearly There!",
                     style: TextStyle(
                         color: Palette().auroraGreen,
@@ -749,25 +798,11 @@ nonsuccessAurora(context) {
               ],
             ),
           ),
-          actions: [
-            Center(
-                child: MaterialButton(
-              minWidth: 150,
-              color: Palette().auroraGreen,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "Tap to View",
-                style: TextStyle(color: Palette().bluebg),
-              ),
-            ))
-          ],
         );
       });
 }
 
-successAurora(context) {
+successAurora(context, time, name, msg) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -775,7 +810,7 @@ successAurora(context) {
           backgroundColor: Palette().bluebg,
           content: Container(
             // color: Palette().bluebg.withOpacity(0.8),
-            height: 150,
+            height: 200,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -786,7 +821,7 @@ successAurora(context) {
                         color: Palette().auroraGreen,
                         fontSize: 20,
                         fontWeight: FontWeight.bold)),
-                Text("The song was descrypted successfully"),
+                Text("Your aurora was descrypted successfully"),
               ],
             ),
           ),
@@ -796,7 +831,10 @@ successAurora(context) {
               minWidth: 150,
               color: Palette().auroraGreen,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Decrypt(time, name, msg)));
               },
               child: Text(
                 "Tap to View",
