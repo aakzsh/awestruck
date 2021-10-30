@@ -3,11 +3,15 @@ import 'dart:convert';
 import 'package:awestruck/chat/messaging.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:awestruck/chat/msgData.dart';
+import 'package:awestruck/home.dart';
 
 Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
 class NewAurora extends StatefulWidget {
-  const NewAurora({Key key}) : super(key: key);
+  NewAurora(this.roomId);
+  String roomId;
 
   @override
   _NewAuroraState createState() => _NewAuroraState();
@@ -63,8 +67,10 @@ class _NewAuroraState extends State<NewAurora> {
                 color: Palette().auroraGreen,
                 onPressed: () {
                   content = stringToBase64.encode(lmao);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NewAuroraSend()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewAuroraSend(widget.roomId)));
                 },
                 child: Text(
                   "Encrypt",
@@ -80,11 +86,19 @@ class _NewAuroraState extends State<NewAurora> {
 }
 
 class NewAuroraSend extends StatefulWidget {
+  NewAuroraSend(this.roomId);
+  String roomId;
+
   @override
   _NewAuroraSendState createState() => _NewAuroraSendState();
 }
 
 class _NewAuroraSendState extends State<NewAuroraSend> {
+  DatabaseReference _messagesRef;
+  DatabaseReference _firebaseref = FirebaseDatabase(
+          databaseURL:
+              'https://awestruck-d86c7-default-rtdb.asia-southeast1.firebasedatabase.app')
+      .reference();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +137,22 @@ class _NewAuroraSendState extends State<NewAuroraSend> {
                 color: Palette().auroraGreen,
                 onPressed: () {
                   //send and navigate to messaging
+                  final msgData = MsgData(
+                      author: username,
+                      message_body: content,
+                      time: DateTime.now().toString(),
+                      aurora: true,
+                      sticker: null);
+                  _firebaseref
+                      .child(widget.roomId)
+                      .push()
+                      .set(msgData.toMap())
+                      .then((value) {
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                      return count++ == 2;
+                    });
+                  });
                 },
                 child: Text(
                   "Send",
