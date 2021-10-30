@@ -12,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:activity_ring/activity_ring.dart';
 
+String form = "Meditation";
 String musicUrl =
     "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3";
 
@@ -244,7 +245,7 @@ class _SeekBarState extends State<SeekBar> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "     Meditation",
+                          "     $form",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Stack(

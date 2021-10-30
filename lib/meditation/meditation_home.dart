@@ -99,6 +99,7 @@ class _MeditationState extends State<Meditation> {
                           InkWell(
                             onTap: () {
                               setState(() {
+                                form = "Meditation";
                                 musicUrl =
                                     "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true";
                               });
@@ -115,6 +116,11 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              setState(() {
+                                form = "Meditation";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Calm.mp3?raw=true";
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -123,11 +129,52 @@ class _MeditationState extends State<Meditation> {
                             child: listContainer(
                                 cont,
                                 "Calm",
+                                Color.fromRGBO(9, 70, 79, 1),
+                                Color.fromRGBO(107, 228, 255, 1)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Meditation";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Peace.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Peace",
+                                Color.fromRGBO(20, 100, 65, 1),
+                                Palette().auroraGreen),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Meditation";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Relax.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Relax",
                                 Color.fromRGBO(152, 91, 189, 1),
                                 Color.fromRGBO(233, 200, 253, 1)),
                           ),
                           InkWell(
                             onTap: () {
+                              setState(() {
+                                form = "Meditation";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Soothe.mp3?raw=true";
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -135,35 +182,9 @@ class _MeditationState extends State<Meditation> {
                             },
                             child: listContainer(
                                 cont,
-                                "Calm",
-                                Color.fromRGBO(152, 91, 189, 1),
-                                Color.fromRGBO(233, 200, 253, 1)),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Play()));
-                            },
-                            child: listContainer(
-                                cont,
-                                "Calm",
-                                Color.fromRGBO(152, 91, 189, 1),
-                                Color.fromRGBO(233, 200, 253, 1)),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Play()));
-                            },
-                            child: listContainer(
-                                cont,
-                                "Calm",
-                                Color.fromRGBO(152, 91, 189, 1),
-                                Color.fromRGBO(233, 200, 253, 1)),
+                                "Soothe",
+                                Color.fromRGBO(9, 70, 79, 1),
+                                Color.fromRGBO(107, 228, 255, 1)),
                           ),
                         ],
                       ),
@@ -186,31 +207,95 @@ class _MeditationState extends State<Meditation> {
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          listContainer(
-                              cont,
-                              "Relax",
-                              Color.fromRGBO(9, 70, 79, 1),
-                              Color.fromRGBO(107, 228, 255, 1)),
-                          listContainer(
-                              cont,
-                              "Relax",
-                              Color.fromRGBO(9, 70, 79, 1),
-                              Color.fromRGBO(107, 228, 255, 1)),
-                          listContainer(
-                              cont,
-                              "Relax",
-                              Color.fromRGBO(9, 70, 79, 1),
-                              Color.fromRGBO(107, 228, 255, 1)),
-                          listContainer(
-                              cont,
-                              "Relax",
-                              Color.fromRGBO(9, 70, 79, 1),
-                              Color.fromRGBO(107, 228, 255, 1)),
-                          listContainer(
-                            cont,
-                            "Relax",
-                            Color.fromRGBO(9, 70, 79, 1),
-                            Color.fromRGBO(107, 228, 255, 1),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Yoga";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/Calm.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Calm",
+                                Color.fromRGBO(20, 100, 65, 1),
+                                Palette().auroraGreen),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Yoga";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/breathe.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Breathe",
+                                Color.fromRGBO(152, 91, 189, 1),
+                                Color.fromRGBO(233, 200, 253, 1)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Yoga";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/chant.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Chant",
+                                Color.fromRGBO(9, 70, 79, 1),
+                                Color.fromRGBO(107, 228, 255, 1)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Yoga";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/fast.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Fast",
+                                Color.fromRGBO(20, 100, 65, 1),
+                                Palette().auroraGreen),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Yoga";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/power.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Power",
+                                Color.fromRGBO(152, 91, 189, 1),
+                                Color.fromRGBO(233, 200, 253, 1)),
                           )
                         ],
                       ),
@@ -235,31 +320,96 @@ class _MeditationState extends State<Meditation> {
                       child: Row(
                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          listContainer(
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Natural Sounds";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/rain.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Rain",
+                                Color.fromRGBO(9, 70, 79, 1),
+                                Color.fromRGBO(107, 228, 255, 1)),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                setState(() {
+                                  form = "Natural Sounds";
+                                  musicUrl =
+                                      "https://github.com/aakzsh/awestruck-library/blob/main/jungle.mp3?raw=true";
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Play()));
+                              },
+                              child: listContainer(
+                                  cont,
+                                  "Jungle",
+                                  Color.fromRGBO(20, 100, 65, 1),
+                                  Palette().auroraGreen)),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Natural Sounds";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/space.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
                               cont,
-                              "Relax",
-                              Color.fromRGBO(20, 100, 65, 1),
-                              Palette().auroraGreen),
-                          listContainer(
-                              cont,
-                              "Calm",
-                              Color.fromRGBO(20, 100, 65, 1),
-                              Palette().auroraGreen),
-                          listContainer(
-                              cont,
-                              "Soothe",
-                              Color.fromRGBO(20, 100, 65, 1),
-                              Palette().auroraGreen),
-                          listContainer(
-                              cont,
-                              "Relax",
-                              Color.fromRGBO(20, 100, 65, 1),
-                              Palette().auroraGreen),
-                          listContainer(
-                              cont,
-                              "Calm",
-                              Color.fromRGBO(20, 100, 65, 1),
-                              Palette().auroraGreen),
+                              "Space",
+                              Color.fromRGBO(152, 91, 189, 1),
+                              Color.fromRGBO(233, 200, 253, 1),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Natural Sounds";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/wind.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Wind",
+                                Color.fromRGBO(9, 70, 79, 1),
+                                Color.fromRGBO(107, 228, 255, 1)),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                form = "Natural Sounds";
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/birds.mp3?raw=true";
+                              });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Play()));
+                            },
+                            child: listContainer(
+                                cont,
+                                "Birds",
+                                Color.fromRGBO(20, 100, 65, 1),
+                                Palette().auroraGreen),
+                          )
                         ],
                       ),
                     ),
