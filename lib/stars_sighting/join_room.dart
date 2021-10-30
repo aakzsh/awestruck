@@ -1,6 +1,7 @@
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/gaze.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:particles_flutter/particles_flutter.dart';
 
@@ -13,7 +14,7 @@ String UniversalCode;
 
 class _JoinRoomState extends State<JoinRoom> {
   String code = "";
-
+  String txt = "";
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -124,8 +125,25 @@ class _JoinRoomState extends State<JoinRoom> {
                         borderRadius: BorderRadius.circular(10)),
                     color: Color.fromRGBO(3, 202, 164, 1),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Gaze()));
+                      FirebaseFirestore.instance
+                          .collection("room")
+                          .doc(code)
+                          .get()
+                          .then((value) => {
+                                if (value.exists)
+                                  {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Gaze()))
+                                  }
+                                else
+                                  {
+                                    setState(() {
+                                      txt = "Code Doesn't Exist";
+                                    })
+                                  }
+                              });
                     },
                     child: ListTile(
                         title: Center(
@@ -138,7 +156,8 @@ class _JoinRoomState extends State<JoinRoom> {
                     ))),
                 SizedBox(
                   height: 5,
-                )
+                ),
+                Text(txt),
               ],
             ),
           )),

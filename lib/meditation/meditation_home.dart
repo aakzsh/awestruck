@@ -68,7 +68,7 @@ class _MeditationState extends State<Meditation> {
                             ]),
                             borderRadius: BorderRadius.circular(10)),
                         child: ListTile(
-                          title: Text("Dream With Me"),
+                          title: Text("Meditation"),
                           subtitle: Text("06:00 left"),
                           leading: IconButton(
                               onPressed: () {},
@@ -81,7 +81,7 @@ class _MeditationState extends State<Meditation> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Guided Meditation",
+                      child: Text("Meditaion",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
@@ -98,6 +98,10 @@ class _MeditationState extends State<Meditation> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
+                              setState(() {
+                                musicUrl =
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true";
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -105,7 +109,7 @@ class _MeditationState extends State<Meditation> {
                             },
                             child: listContainer(
                                 cont,
-                                "Calm",
+                                "Flute",
                                 Color.fromRGBO(152, 91, 189, 1),
                                 Color.fromRGBO(233, 200, 253, 1)),
                           ),
@@ -169,7 +173,7 @@ class _MeditationState extends State<Meditation> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Unguided Meditation",
+                      child: Text("Yoga",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
@@ -216,7 +220,7 @@ class _MeditationState extends State<Meditation> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Power Yoga",
+                      child: Text("Nature sounds",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
