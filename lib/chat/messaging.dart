@@ -725,7 +725,7 @@ auroraText(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Sent an aurora "),
+              Text("$name sent an aurora "),
               Text(
                 time.toString().substring(0, 16),
                 style: TextStyle(fontSize: 12, color: Colors.white54),
