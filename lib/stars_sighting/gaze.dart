@@ -194,7 +194,7 @@ city(String yourCity) {
   if (yourCity.length > 20) {
     List<String> dummy = yourCity.split(",");
     int len = dummy.length;
-    return dummy[len - 3] + dummy[len - 2] + dummy[len - 1];
+    return dummy[len - 3] + "," + dummy[len - 2] + "," + dummy[len - 1];
     // return;
   } else {
     return yourCity;
