@@ -50,7 +50,6 @@ dependencies:
   firebase_analytics: ^5.0.6
   image_picker:
   graphql_flutter:
-  geolocator: ^7.6.2
   intl: ^0.17.0
 
 dev_dependencies:

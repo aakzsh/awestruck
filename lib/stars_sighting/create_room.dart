@@ -88,7 +88,8 @@ class _CreateRoomState extends State<CreateRoom> {
                                     )),
                                 InkWell(
                                   child: CircleAvatar(
-                                    backgroundColor: Colors.white,
+                                    backgroundImage: MemoryImage(lmaoo),
+                                    // backgroundColor: Colors.white,
                                     radius: 20,
                                   ),
                                   onTap: () {

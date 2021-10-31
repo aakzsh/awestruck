@@ -43,7 +43,8 @@ class _StarRoomState extends State<StarRoom> {
                           )),
                       InkWell(
                         child: CircleAvatar(
-                          backgroundColor: Colors.white,
+                          backgroundImage: MemoryImage(lmaoo),
+                          // backgroundColor: Colors.white,
                           radius: 20,
                         ),
                         onTap: () {

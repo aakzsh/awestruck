@@ -95,7 +95,8 @@ class _GazeState extends State<Gaze> {
                                 )),
                             InkWell(
                               child: CircleAvatar(
-                                backgroundColor: Colors.white,
+                                backgroundImage: MemoryImage(lmaoo),
+                                // backgroundColor: Colors.white,
                                 radius: 20,
                               ),
                               onTap: () {
