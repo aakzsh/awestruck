@@ -5,6 +5,8 @@ import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:awestruck/home.dart';
+import 'package:intl/intl.dart';
 
 class WalkHome extends StatefulWidget {
   @override
@@ -16,8 +18,9 @@ class _WalkHomeState extends State<WalkHome> {
   Stream<PedestrianStatus> _pedestrianStatusStream;
   String _status = '?', _steps = '?';
   DateTime _selectedDay;
-  DateTime prevDay;
+  DateFormat formatter = DateFormat('yyyy-MM-dd');
   DateTime _focusedDay = DateTime.now();
+  DateTime today = DateTime.now();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   int rSteps = 0;
   @override
@@ -32,7 +35,7 @@ class _WalkHomeState extends State<WalkHome> {
     setState(() {
       _steps = event.steps.toString();
 
-      if (!isSameDay(DateTime(2021, 10, 26), DateTime(2021, 10, 27))) {
+      if (!isSameDay(DateTime.parse(prevDay), today)) {
         FirebaseFirestore.instance
             .collection("users")
             .doc('shroo')
@@ -43,13 +46,15 @@ class _WalkHomeState extends State<WalkHome> {
                   })
                 })
             .then((value) {
-          firestore
-              .collection('users')
-              .doc('shroo')
-              .update({'totalStepsUntilYesterday': rSteps});
+          firestore.collection('users').doc('shroo').update({
+            'totalStepsUntilYesterday': rSteps,
+            'prevDay': formatter.format(DateTime.now())
+          });
         });
 
-        prevDay = DateTime.now();
+        today = DateTime.now();
+        _focusedDay = DateTime.now();
+        // prevDay = DateTime.now();
       }
       //update total steps
       firestore
@@ -96,15 +101,15 @@ class _WalkHomeState extends State<WalkHome> {
   void getStepsData() {}
 
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {
-    return dateTime.subtract(Duration(days: dateTime.weekday));
+    print(dateTime.weekday);
+    return dateTime.subtract(Duration(days: dateTime.weekday % 7));
   }
 
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
-    return dateTime
-        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday - 1));
+    DateTime fd = findFirstDateOfTheWeek(dateTime);
+    return fd.add(Duration(days: 6));
   }
 
-  DateTime today = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.week;
 
   @override

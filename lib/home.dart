@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 //firebase vars
 String email, name, status, username;
-String prevDay, dob;
+String dob;
 int meditation,
     steps_total = 0,
     totalStepsUntilYesterday,
@@ -19,6 +20,9 @@ int meditation,
 Map place;
 List weekly_steps;
 Stream documentStream;
+DateTime now = DateTime.now();
+DateFormat formatter = DateFormat('yyyy-MM-dd');
+String prevDay = formatter.format(now);
 
 class Decide extends StatefulWidget {
   // const Decide({Key? key}) : super(key: key);
@@ -118,7 +122,7 @@ class _HomeState extends State<Home> {
                           email = value.data()['email'];
                           dob = value.data()['dob'];
                           meditation = value.data()['meditation'];
-                          prevDay = value.data()['prevDay'];
+                          prevDay = value.data()['prevDay'].toString();
                           steps_total = value.data()['steps_total'];
                           totalCoins = value.data()['totalCoins'];
                           totalStepsUntilYesterday =

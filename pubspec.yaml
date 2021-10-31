@@ -51,6 +51,7 @@ dependencies:
   image_picker:
   graphql_flutter:
   geolocator: ^7.6.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

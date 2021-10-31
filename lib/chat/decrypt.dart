@@ -1,3 +1,4 @@
+import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -19,7 +20,9 @@ class _DecryptState extends State<Decrypt> {
     String decoded = stringToBase64.decode(widget.msg);
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(color: Palette().bluebg),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ListTile(
               title: Row(
@@ -32,12 +35,21 @@ class _DecryptState extends State<Decrypt> {
                   )
                 ],
               ),
-              subtitle: Text(decoded),
               leading: CircleAvatar(
                 backgroundColor: Colors.pink,
                 radius: 20,
               ),
             ),
+            SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Container(
+                decoration: BoxDecoration(color: Color(0xff0C1324)),
+                child: Text(decoded),
+              ),
+            )
           ],
         ),
       ),
