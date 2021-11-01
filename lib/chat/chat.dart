@@ -15,6 +15,7 @@ class Chat extends StatefulWidget {
 }
 
 List<Friend> _friends = <Friend>[];
+List _names = [];
 
 class _ChatState extends State<Chat> {
   String newFriend;
@@ -42,11 +43,15 @@ class _ChatState extends State<Chat> {
             .get()
             .then((value) {
           print(value.data());
-          if (!_friends.contains(Friend(friend, value.data()['status']))) {
+
+          if (!_names.contains(friend)) {
             setState(() {
               _friends.add(Friend(friend, value.data()['status']));
             });
+            _names.add(friend);
           }
+          // if (!_friends.contains(Friend(friend, value.data()['status']))) {
+          // }
         });
       }
     });
@@ -55,7 +60,7 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    // getInfo();
+    getInfo();
 
     return Scaffold(
       body: Container(
