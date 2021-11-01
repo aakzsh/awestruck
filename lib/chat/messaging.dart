@@ -175,9 +175,20 @@ class _MessagingState extends State<Messaging> {
         });
   }
 
+  String pfpurl;
+
   @override
   void initState() {
     super.initState();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.name)
+        .get()
+        .then((value) {
+      setState(() {
+        pfpurl = value.data()['pfp'];
+      });
+    });
   }
 
   @override
@@ -243,7 +254,8 @@ class _MessagingState extends State<Messaging> {
                                         fontSize: 11, color: Colors.white54),
                                   ),
                                   leading: CircleAvatar(
-                                    backgroundColor: Colors.white,
+                                    backgroundImage:
+                                        MemoryImage(base64Decode(pfpurl)),
                                   ),
                                 ))
                           ],
@@ -372,6 +384,8 @@ class _MessagingState extends State<Messaging> {
                                           fontSize: 11, color: Colors.white54),
                                     ),
                                     leading: CircleAvatar(
+                                      backgroundImage:
+                                          MemoryImage(base64Decode(pfpurl)),
                                       backgroundColor: Colors.white,
                                     ),
                                   ))
