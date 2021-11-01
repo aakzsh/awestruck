@@ -16,7 +16,7 @@ uploadLastPlayed(x, y) {
   });
 }
 
-List<String> lp = [
+List lp = [
   "Meditation",
   "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true"
 ];
@@ -38,13 +38,14 @@ class _MeditationState extends State<Meditation> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => getLastPlayed());
-    getLastPlayed();
+    // getLastPlayed();
   }
 
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double cont = (w - 40) / 3 - 15;
+    getLastPlayed();
     return Scaffold(
         backgroundColor: Palette().bluebg,
         body: Padding(
