@@ -173,8 +173,9 @@ class _WalkHomeState extends State<WalkHome> {
                           height: 20,
                         ),
                         Text(
-                          //_steps- totaluntilyesterday
-                          _steps,
+                          // _steps- totaluntilyesterday
+                          // _steps,
+                          "900",
                           style: TextStyle(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         ),
@@ -242,9 +243,14 @@ class _WalkHomeState extends State<WalkHome> {
                   padding: const EdgeInsets.only(bottom: 70),
                   child: TableCalendar(
                     calendarFormat: _calendarFormat,
-                    firstDay: findFirstDateOfTheWeek(today),
-                    lastDay: findLastDateOfTheWeek(today),
-                    focusedDay: DateTime.now(),
+                    firstDay: findFirstDateOfTheWeek(DateTime.now()),
+                    lastDay: DateTime(2100),
+                    focusedDay: _focusedDay,
+                    onPageChanged: (focusedDay) {
+                      _focusedDay = focusedDay;
+                    },
+                    headerStyle: HeaderStyle(
+                        leftChevronVisible: false, rightChevronVisible: false),
                     calendarBuilders: CalendarBuilders(
                       selectedBuilder: (context, day, focusedDay) {
                         final text = day.day.toString();

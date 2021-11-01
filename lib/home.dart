@@ -17,6 +17,7 @@ int meditation,
     totalCoins,
     usedCoins;
 Map place;
+List friendList;
 List weekly_steps;
 Stream documentStream;
 DateTime now = DateTime.now();
@@ -92,9 +93,19 @@ class _HomeState extends State<Home> {
                           usedCoins = value.data()['usedCoins'];
                           weekly_steps = value.data()['weekly_steps'];
                           pfpurl = value.data()['pfp'];
-                        })
-                      })
+                        }),
+                      }),
+              FirebaseFirestore.instance
+                  .collection("friends")
+                  .doc(value.data()['username'])
+                  .get()
                   .then((value) {
+                setState(() {
+                  print(
+                      "${value.data()} =====================================");
+                  friendList = value.data()['friends'];
+                });
+              }).then((value) {
                 print(weekly_steps);
               })
             });

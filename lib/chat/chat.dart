@@ -1,5 +1,6 @@
 import 'package:awestruck/chat/messaging.dart';
 import 'package:awestruck/chat/pending_req.dart';
+import 'package:awestruck/chat/public_profile.dart';
 import 'package:awestruck/chat/query.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
@@ -16,6 +17,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   String newFriend;
   List<Friend> _friends = <Friend>[];
+  final friendSearch = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -127,6 +129,7 @@ class _ChatState extends State<Chat> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     TextFormField(
+                                      controller: friendSearch,
                                       onChanged: (value2) {
                                         newFriend = value2;
                                       },
@@ -141,23 +144,21 @@ class _ChatState extends State<Chat> {
                                     "Next",
                                     style: TextStyle(color: Palette().bluebg),
                                   ),
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PublicProfile(
+                                                friendSearch.text)));
+                                  },
                                 )
                               ],
                             );
                           });
                     },
-                    child: MaterialButton(
-                      child: Text(
-                        "Add Friends",
-                        style: TextStyle(color: Palette().bluebg),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StickerQuery()));
-                      },
+                    child: Text(
+                      "Add Friends",
+                      style: TextStyle(color: Palette().bluebg),
                     ),
                   ),
                 ],
