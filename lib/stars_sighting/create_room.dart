@@ -226,7 +226,7 @@ class _CreateRoomState extends State<CreateRoom> {
                           debuggingEnabled: true,
                           javascriptMode: JavascriptMode.unrestricted,
                           initialUrl:
-                              "https://nightsky-api.herokuapp.com/night?code=$UniversalCode&&lat=${lat.toString()}&&${lng.toString()}&&time=now",
+                              "https://nightsky-api.herokuapp.com/night?code=$UniversalCode&&lat=${lat.toString()}&&lng=${lng.toString()}&&time=now",
                         ),
                       )
                     ],
