@@ -139,7 +139,8 @@ class _WalkHomeState extends State<WalkHome> {
                           )),
                       InkWell(
                         child: CircleAvatar(
-                          backgroundColor: Colors.white,
+                          backgroundImage: MemoryImage(lmaoo),
+                          // backgroundColor: Colors.white,
                           radius: 20,
                         ),
                         onTap: () {

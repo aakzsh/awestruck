@@ -14,6 +14,8 @@ class Chat extends StatefulWidget {
   _ChatState createState() => _ChatState();
 }
 
+List<Friend> _friends = <Friend>[];
+
 class _ChatState extends State<Chat> {
   String newFriend;
   List<Friend> _friends = <Friend>[];
@@ -75,7 +77,8 @@ class _ChatState extends State<Chat> {
                         )),
                     InkWell(
                       child: CircleAvatar(
-                        backgroundColor: Colors.white,
+                        backgroundImage: MemoryImage(lmaoo),
+                        // backgroundColor: Colors.white,
                         radius: 20,
                       ),
                       onTap: () {

@@ -203,7 +203,11 @@ class _SignupState extends State<Signup> {
                                           "place": {"lat": 40, "lng": 83},
                                           "totalCoins": 0,
                                           "totalStepsUntilYesterday": 0,
-                                          "usedCoins": 0
+                                          "usedCoins": 0,
+                                          "last_played": [
+                                            "Meditation",
+                                            "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true"
+                                          ]
                                         }).then((_) => {
                                                   Navigator.pushReplacement(
                                                       context,

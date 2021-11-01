@@ -1,6 +1,8 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/home.dart';
 import 'package:awestruck/meditation/play.dart';
 import 'package:awestruck/profile/profile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Meditation extends StatefulWidget {
@@ -8,7 +10,37 @@ class Meditation extends StatefulWidget {
   _MeditationState createState() => _MeditationState();
 }
 
+uploadLastPlayed(x, y) {
+  FirebaseFirestore.instance.collection("users").doc(username).update({
+    "last_played": [x, y]
+  });
+}
+
+List<String> lp = [
+  "Meditation",
+  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true"
+];
+
 class _MeditationState extends State<Meditation> {
+  getLastPlayed() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(username)
+        .get()
+        .then((value) => {
+              setState(() {
+                lp = value.data()['last_played'];
+              })
+            });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => getLastPlayed());
+    getLastPlayed();
+  }
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -38,7 +70,8 @@ class _MeditationState extends State<Meditation> {
                             )),
                         InkWell(
                           child: CircleAvatar(
-                            backgroundColor: Colors.white,
+                            backgroundImage: MemoryImage(lmaoo),
+                            // backgroundColor: Colors.white,
                             radius: 20,
                           ),
                           onTap: () {
@@ -68,10 +101,19 @@ class _MeditationState extends State<Meditation> {
                             ]),
                             borderRadius: BorderRadius.circular(10)),
                         child: ListTile(
-                          title: Text("Meditation"),
-                          subtitle: Text("06:00 left"),
+                          title: Text(lp[0]),
+                          subtitle: Text("continue"),
                           leading: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  form = lp[0];
+                                  musicUrl = lp[1];
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Play()));
+                              },
                               icon: Icon(Icons.play_arrow,
                                   size: 30,
                                   color: Color.fromRGBO(253, 204, 250, 1))),
@@ -81,7 +123,7 @@ class _MeditationState extends State<Meditation> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("Meditaion",
+                      child: Text("Meditation",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.normal,
@@ -98,6 +140,8 @@ class _MeditationState extends State<Meditation> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Meditation",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/flute.mp3?raw=true");
                               setState(() {
                                 form = "Meditation";
                                 musicUrl =
@@ -116,6 +160,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Meditation",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Calm.mp3?raw=true");
                               setState(() {
                                 form = "Meditation";
                                 musicUrl =
@@ -134,6 +180,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Meditation",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Peace.mp3?raw=true");
                               setState(() {
                                 form = "Meditation";
                                 musicUrl =
@@ -152,6 +200,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Meditation",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Relax.mp3?raw=true");
                               setState(() {
                                 form = "Meditation";
                                 musicUrl =
@@ -170,6 +220,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Meditation",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/meditation/Soothe.mp3?raw=true");
                               setState(() {
                                 form = "Meditation";
                                 musicUrl =
@@ -209,10 +261,12 @@ class _MeditationState extends State<Meditation> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Yoga",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/yoga/calm.mp3?raw=true");
                               setState(() {
                                 form = "Yoga";
                                 musicUrl =
-                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/Calm.mp3?raw=true";
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/yoga/calm.mp3?raw=true";
                               });
                               Navigator.push(
                                   context,
@@ -227,6 +281,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Yoga",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/yoga/breathe.mp3?raw=true");
                               setState(() {
                                 form = "Yoga";
                                 musicUrl =
@@ -245,6 +301,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Yoga",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/yoga/chant.mp3?raw=true");
                               setState(() {
                                 form = "Yoga";
                                 musicUrl =
@@ -263,6 +321,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Yoga",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/yoga/fast.mp3?raw=true");
                               setState(() {
                                 form = "Yoga";
                                 musicUrl =
@@ -281,6 +341,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Yoga",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/yoga/power.mp3?raw=true");
                               setState(() {
                                 form = "Yoga";
                                 musicUrl =
@@ -322,6 +384,8 @@ class _MeditationState extends State<Meditation> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Natural Sounds",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/rain.mp3?raw=true");
                               setState(() {
                                 form = "Natural Sounds";
                                 musicUrl =
@@ -340,6 +404,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                               onTap: () {
+                                uploadLastPlayed("Natural Sounds",
+                                    "https://github.com/aakzsh/awestruck-library/blob/main/jungle.mp3?raw=true");
                                 setState(() {
                                   form = "Natural Sounds";
                                   musicUrl =
@@ -357,6 +423,8 @@ class _MeditationState extends State<Meditation> {
                                   Palette().auroraGreen)),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Natural Sounds",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/space.mp3?raw=true");
                               setState(() {
                                 form = "Natural Sounds";
                                 musicUrl =
@@ -376,6 +444,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Natural Sounds",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/wind.mp3?raw=true");
                               setState(() {
                                 form = "Natural Sounds";
                                 musicUrl =
@@ -394,6 +464,8 @@ class _MeditationState extends State<Meditation> {
                           ),
                           InkWell(
                             onTap: () {
+                              uploadLastPlayed("Natural Sounds",
+                                  "https://github.com/aakzsh/awestruck-library/blob/main/birds.mp3?raw=true");
                               setState(() {
                                 form = "Natural Sounds";
                                 musicUrl =

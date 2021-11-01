@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:awestruck/home.dart';
+import 'package:awestruck/chat/chat.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -17,6 +18,8 @@ class Profile extends StatefulWidget {
 }
 
 String pfpurl = "";
+
+Uint8List lmaoo = base64Decode(pfpurl);
 
 class _ProfileState extends State<Profile> {
   DateTime selectedDate = DateTime.parse("2000-01-01 00:00:00");
@@ -95,7 +98,6 @@ class _ProfileState extends State<Profile> {
             });
   }
 
-  Uint8List lmaoo = base64Decode(pfpurl);
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
