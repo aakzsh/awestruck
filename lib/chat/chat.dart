@@ -153,11 +153,25 @@ class _ChatState extends State<Chat> {
                                     style: TextStyle(color: Palette().bluebg),
                                   ),
                                   onPressed: () async {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => PublicProfile(
-                                                friendSearch.text)));
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(friendSearch.text)
+                                        .get()
+                                        .then((value) => {
+                                              setState(() {
+                                                pfpurl_public =
+                                                    value.data()['pfp'];
+                                              })
+                                            })
+                                        .then((_) => {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PublicProfile(
+                                                              friendSearch
+                                                                  .text)))
+                                            });
                                   },
                                 )
                               ],

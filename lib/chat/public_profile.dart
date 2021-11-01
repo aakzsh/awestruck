@@ -18,7 +18,7 @@ class PublicProfile extends StatefulWidget {
   _PublicProfileState createState() => _PublicProfileState();
 }
 
-String pfpurl = "";
+String pfpurl_public = "";
 // Uint8List lmaoo;
 
 class _PublicProfileState extends State<PublicProfile> {
@@ -43,7 +43,7 @@ class _PublicProfileState extends State<PublicProfile> {
                 // pfp = value.data()['pfp'];
                 name = value.data()['name'];
                 status = value.data()['status'];
-                pfpurl = value.data()['pfp'];
+                // pfpurl_public = value.data()['pfp'];
                 dob = value.data()['dob'];
                 level = value.data()['level'];
                 starsign = getZodiacSign(
@@ -66,7 +66,7 @@ class _PublicProfileState extends State<PublicProfile> {
             });
   }
 
-  Uint8List lmaoo = base64Decode(pfpurl);
+  Uint8List lmaooo = base64Decode(pfpurl_public);
   String buttonText = " bt";
   @override
   Widget build(BuildContext context) {
@@ -113,7 +113,7 @@ class _PublicProfileState extends State<PublicProfile> {
                       child: Column(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundImage: MemoryImage(lmaoo),
+                            backgroundImage: MemoryImage(lmaooo),
                             radius: 80,
                             // backgroundColor: Colors.amber,
                           ),
@@ -143,7 +143,7 @@ class _PublicProfileState extends State<PublicProfile> {
                       color: Palette().auroraGreen,
                       onPressed: (buttonText == "Add Friend")
                           ? () {
-                              print("bitch");
+                              print("progress hai");
                               pendingList.add(h.username);
                               print("pendingList, $username");
                               FirebaseFirestore.instance
