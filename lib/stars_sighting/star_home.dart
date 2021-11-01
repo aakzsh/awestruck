@@ -1,6 +1,7 @@
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/create_room.dart';
+import 'package:awestruck/stars_sighting/gaze.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -159,6 +160,8 @@ class _StarRoomState extends State<StarRoom> {
                                               .collection("room")
                                               .doc(UniversalCode)
                                               .set({
+                                            "lat": lat,
+                                            "lng": lng,
                                             'url': "x",
                                             'participants': [
                                               {'name': name, 'status': status}

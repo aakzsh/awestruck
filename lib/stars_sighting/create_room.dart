@@ -17,48 +17,37 @@ class CreateRoom extends StatefulWidget {
 
 // String _chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+List<Map> participantshehe = [{}, {}];
+int nums;
+
 class _CreateRoomState extends State<CreateRoom> {
   CreateRoom cr;
   String name = "", status = "", username = "";
   var r = Random();
 
-  getData(code) {
-    FirebaseFirestore.instance
-        .collection('userids')
-        .doc(FirebaseAuth.instance.currentUser.uid)
+  getData() async {
+    await FirebaseFirestore.instance
+        .collection("room")
+        .doc(UniversalCode)
         .get()
         .then((value) => {
-              setState(() {
-                username = value.data()['username'];
-              }),
-              FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(value.data()['username'])
-                  .get()
-                  .then((value) => {
-                        setState(() {
-                          name = value.data()['name'];
-                          status = value.data()['status'];
-                        })
-                      })
-                  .then((value) => {
-                        FirebaseFirestore.instance
-                            .collection("room")
-                            .doc(code)
-                            .set({
-                          'participants': [
-                            {'name': name, 'status': status}
-                          ],
-                        })
-                      })
+              if (value.exists)
+                {
+                  print("exists"),
+                  setState(() {
+                    participantshehe = value.data()['participants'];
+                  })
+                }
+              else
+                {print("doesnt exist")}
             });
   }
 
   @override
   Widget build(BuildContext context) {
-    // getData(code);
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
+    getData();
     // double cont_w = (w - 40) / 3 - 15;
     return Scaffold(
       body: Container(
@@ -179,14 +168,26 @@ class _CreateRoomState extends State<CreateRoom> {
                             ),
                           ),
                           SizedBox(height: 20),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "People in the room",
-                              style: TextStyle(color: Colors.white54),
-                            ),
-                          ),
-                          Container(child: participantList('name', 'status')),
+                          // Align(
+                          //   alignment: Alignment.centerLeft,
+                          //   child: Text(
+                          //     "People in the room",
+                          //     style: TextStyle(color: Colors.white54),
+                          //   ),
+                          // ),
+                          // Align(
+                          //     alignment: Alignment.centerLeft,
+                          //     child: Text("There are llll people in the room!"))
+                          // Container(
+                          //   height: 200,
+                          //   child: ListView.builder(
+                          //       itemCount: participantshehe.length,
+                          //       itemBuilder: (BuildContext context, int index) {
+                          //         return participantList(
+                          //             participantshehe[index]['name'],
+                          //             participantshehe[index]['status']);
+                          //       }),
+                          // ),
                         ],
                       ),
                     ),
@@ -200,8 +201,8 @@ class _CreateRoomState extends State<CreateRoom> {
                           color: Color.fromRGBO(3, 202, 164, 1),
                           onPressed: () {
                             setState(() {
-                              lat = 19.0760;
-                              lng = 72.8777;
+                              lat = lat;
+                              lng = lat;
                             });
                             Navigator.push(
                                 context,

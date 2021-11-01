@@ -1,4 +1,5 @@
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/home.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/gaze.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -133,10 +134,20 @@ class _JoinRoomState extends State<JoinRoom> {
                           .then((value) => {
                                 if (value.exists)
                                   {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Gaze()))
+                                    FirebaseFirestore.instance
+                                        .collection("room")
+                                        .doc(UniversalCode)
+                                        .update({
+                                      'participants': FieldValue.arrayUnion([
+                                        {'name': name, 'status': status}
+                                      ]),
+                                    }).then((value) => {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Gaze()))
+                                            })
                                   }
                                 else
                                   {
