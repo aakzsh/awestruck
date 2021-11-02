@@ -6,11 +6,14 @@ import 'dart:math';
 
 import 'package:audio_session/audio_session.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
+import 'package:awestruck/webview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:activity_ring/activity_ring.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String form = "Meditation";
 String musicUrl =
@@ -83,13 +86,42 @@ class _PlayState extends State<Play> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
         color: Palette().bluebg,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.yellow),
+                  borderRadius: BorderRadius.circular(10)),
+              minWidth: w / 2 - 40,
+              color: Colors.yellow,
+              child: Text(
+                "Share on Snapchat",
+                style: TextStyle(color: Palette().bluebg),
+              ),
+              onPressed: () async {
+                const url =
+                    'https://nightsky-api.herokuapp.com/meditation_stats';
+
+                // if (await canLaunch(url)) {
+                //   await launch(url, forceWebView: true, enableJavaScript: true);
+                // } else {
+                //   throw 'Could not launch $url';
+                // }
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Webview(url)));
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+
             // Display play/pause button and volume/speed sliders.
             ControlButtons(_player),
             // Display seek bar. Using StreamBuilder, this widget rebuilds
@@ -127,6 +159,7 @@ class ControlButtons extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Opens volume slider dialog
+
             Ring(
               percent: 100,
               color: RingColorScheme(
