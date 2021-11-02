@@ -19,11 +19,13 @@ class Gaze extends StatefulWidget {
 var addresses, first;
 double lat = 28.5355;
 double lng = 77.3910;
-final coordinates = new Coordinates(lat, lng);
+double latshow = 28.5355, lngshow = 77.3910;
+final coordinates = new Coordinates(latshow, lngshow);
 String yourCity = "city";
 var address;
 
 class _GazeState extends State<Gaze> {
+  bool _visible = true;
   Gaze gr;
   // final coordinates = new Coordinates(19.0760, 72.8777);
 
@@ -37,6 +39,8 @@ class _GazeState extends State<Gaze> {
         .then((value) => {
               setState(() {
                 url = value.data()['url'];
+                latshow = value.data()['lat'];
+                lngshow = value.data()['lng'];
               })
             });
   }
@@ -128,60 +132,17 @@ class _GazeState extends State<Gaze> {
                                 width: 200,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    MaterialButton(
-                                      color: Colors.blue.withOpacity(0.2),
-                                      onPressed: () {},
-                                      shape: CircleBorder(),
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(Icons.music_note,
-                                              color: Colors.blue)),
-                                    ),
-                                    MaterialButton(
-                                        onPressed: () {},
-                                        color: Colors.blue.withOpacity(0.2),
-                                        shape: CircleBorder(),
-                                        child: IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.message,
-                                                color: Colors.greenAccent))),
-                                  ],
+                                  children: <Widget>[],
                                 ),
                               )),
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              CircleAvatar(
-                                backgroundColor: Colors.pinkAccent,
-                                radius: 20,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.redAccent,
-                                radius: 20,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.blueAccent,
-                                radius: 20,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.greenAccent,
-                                radius: 20,
-                              ),
-                              CircleAvatar(
-                                backgroundColor: Colors.purpleAccent,
-                                radius: 20,
-                              ),
-                            ],
-                          )
                         ],
                       ),
                       color: Palette().bluebg,
                       width: w,
-                      height: 200,
+                      height: 150,
                     ),
                   ],
                 )
