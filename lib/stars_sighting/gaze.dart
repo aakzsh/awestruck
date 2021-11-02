@@ -21,7 +21,7 @@ var addresses, first;
 double lat = 28.5355;
 double lng = 77.3910;
 double latshow = 28.5355, lngshow = 77.3910;
-final coordinates = new Coordinates(latshow, lngshow);
+Coordinates coordinates = new Coordinates(latshow, lngshow);
 String yourCity = "city";
 var address;
 
@@ -47,7 +47,9 @@ class _GazeState extends State<Gaze> {
   }
 
   fetchcity() async {
-    addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    // print(coordinates);
+    addresses = await Geocoder.local
+        .findAddressesFromCoordinates(Coordinates(latshow, lngshow));
     first = addresses.first;
     setState(() {
       yourCity = first.addressLine.toString();
@@ -60,7 +62,8 @@ class _GazeState extends State<Gaze> {
 
   @override
   Widget build(BuildContext context) {
-    var addresses = Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var addresses = Geocoder.local
+        .findAddressesFromCoordinates(Coordinates(latshow, lngshow));
 
     // print(gr.code);
     _fetchImage();
