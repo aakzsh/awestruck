@@ -53,7 +53,7 @@ class _AppState extends State<App> {
   }
 
   final token =
-      'eyJhbGciOiJIUzI1NiIsImtpZCI6IkNhbnZhc1MyU0hNQUNQcm9kIiwidHlwIjoiSldUIn0.eyJhdWQiOiJjYW52YXMtY2FudmFzYXBpIiwiaXNzIjoiY2FudmFzLXMyc3Rva2VuIiwibmJmIjoxNjM0ODcyODU1LCJzdWIiOiJlYTUxZWJjYy0xNWM1LTQzNTUtOWY1Mi1iNTViYzkxMGY3MzF-U1RBR0lOR34wNjI0MWQyZS1hNTU1LTQxZDAtYmRjNC1lYjYyOTdkOGRkNTkifQ.V7vc3HGR7Od8wRKEV4cS6kuInGn037onaGquQ7c60AI';
+      '<token-here>';
 
   @override
   void initState() {
