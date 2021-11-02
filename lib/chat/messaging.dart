@@ -1,6 +1,7 @@
 import 'package:awestruck/chat/decrypt.dart';
 import 'package:awestruck/chat/msgData.dart';
 import 'package:awestruck/chat/newAurora.dart';
+import 'package:awestruck/chat/public_profile.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/home.dart';
 import 'package:flutter/material.dart';
@@ -176,7 +177,7 @@ class _MessagingState extends State<Messaging> {
   }
 
   String pfpurl;
-
+  String mypfp;
   @override
   void initState() {
     super.initState();
@@ -187,6 +188,16 @@ class _MessagingState extends State<Messaging> {
         .then((value) {
       setState(() {
         pfpurl = value.data()['pfp'];
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(username)
+        .get()
+        .then((value) {
+      setState(() {
+        mypfp = value.data()['pfp'];
       });
     });
   }
@@ -407,6 +418,7 @@ class _MessagingState extends State<Messaging> {
                                       item[index]['author'],
                                       item[index]['time'],
                                       item[index]['message_body'],
+                                      mypfp,
                                       context);
                                 } else if (item[index]['message_body'] !=
                                     null) {
@@ -428,6 +440,7 @@ class _MessagingState extends State<Messaging> {
                                       item[index]['author'],
                                       item[index]['time'],
                                       item[index]['message_body'],
+                                      pfpurl,
                                       context);
                                 } else if (item[index]['message_body'] !=
                                     null) {
@@ -729,6 +742,7 @@ auroraText(
   name,
   time,
   msg,
+  pfpurl,
   context,
 ) {
   return Padding(
@@ -775,6 +789,7 @@ auroraText(
             child: Text("Tap to view"),
           ),
           leading: CircleAvatar(
+            backgroundImage: MemoryImage(base64Decode(pfpurl)),
             backgroundColor: Colors.pink,
             radius: 20,
           ),
