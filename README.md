@@ -12,15 +12,19 @@ Awestruck is an app to bring friends together and let them live in the moment. P
 
 ## Usage of assets
 
-Every asset (images, music, fonts, icons, packages, etc) that are used to  build the app are totally free to use and come under non-copyrighted content. A full detailed info can be found at xyz
+Every asset (images, music, fonts, icons, packages, etc) that are used to  build the app are totally free to use and come under non-copyrighted content. 
 
 ## Demo Video
 
+https://youtu.be/tv7S4n0gzZ8
+
 ## Partner Repository
 
-The flask api and website part of the project is at https://github.com/shrutigupta5555/nightmapbaamzi
+The flask api and website part of the project is at https://github.com/aakzsh/nightmapbaamzi
 
 ## Our aim
+
+We wanted to create an app that induces happiness and sense of productivity in people, so that's why we came up with awestruck. Also, we were very much inspired by Snapchat's mission.
 
 ## Contributors
 
