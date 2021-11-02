@@ -103,7 +103,11 @@ class _HomeState extends State<Home> {
                 setState(() {
                   print(
                       "${value.data()} =====================================");
-                  friendList = value.data()['friends'];
+                  if (value.data()['friends'] == null) {
+                    friendList = [];
+                  } else {
+                    friendList = value.data()['friends'];
+                  }
                 });
               }).then((value) {
                 print(weekly_steps);

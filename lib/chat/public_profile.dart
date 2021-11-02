@@ -74,6 +74,7 @@ class _PublicProfileState extends State<PublicProfile> {
     getData();
     getFriends();
     // print(h.friendList);
+
     if (h.friendList.contains(widget.searchString)) {
       buttonText = "Already a friend";
     } else if (pendingList.contains(h.username)) {

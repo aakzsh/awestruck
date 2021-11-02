@@ -186,6 +186,11 @@ class _SignupState extends State<Signup> {
                                 "username": username,
                               }).then((value) => {
                                         FirebaseFirestore.instance
+                                            .collection("friends")
+                                            .doc(username)
+                                            .set(
+                                                {"friends": [], "pending": []}),
+                                        FirebaseFirestore.instance
                                             .collection("users")
                                             .doc(username)
                                             .set({
