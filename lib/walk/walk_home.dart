@@ -1,4 +1,5 @@
 import 'package:awestruck/profile/profile.dart';
+import 'package:awestruck/webview.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
@@ -7,6 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:awestruck/home.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WalkHome extends StatefulWidget {
   @override
@@ -59,7 +61,7 @@ class _WalkHomeState extends State<WalkHome> {
       //update total steps
       firestore
           .collection('users')
-          .doc('shroo')
+          .doc(username)
           .update({'steps_total': event.steps});
     });
   }
@@ -83,7 +85,7 @@ class _WalkHomeState extends State<WalkHome> {
   void onStepCountError(error) {
     print('onStepCountError: $error');
     setState(() {
-      _steps = 'Step Count not available';
+      _steps = '0';
     });
   }
 
@@ -158,7 +160,7 @@ class _WalkHomeState extends State<WalkHome> {
                   lineWidth: 13.0,
                   animation: true,
                   animationDuration: 2000,
-                  percent: 0.9,
+                  percent: 1,
                   animateFromLastPercent: true,
                   center: Container(
                     child: Column(
@@ -175,8 +177,8 @@ class _WalkHomeState extends State<WalkHome> {
                         ),
                         Text(
                           // _steps- totaluntilyesterday
-                          // _steps,
-                          "900",
+                          _steps,
+                          // "900",
                           style: TextStyle(
                               fontSize: 36, fontWeight: FontWeight.bold),
                         ),
@@ -228,7 +230,7 @@ class _WalkHomeState extends State<WalkHome> {
                               style: TextStyle(fontSize: 12),
                             ),
                             Text(
-                              "700",
+                              _steps,
                               style: TextStyle(
                                   fontSize: 36,
                                   fontWeight: FontWeight.bold,
@@ -239,6 +241,28 @@ class _WalkHomeState extends State<WalkHome> {
                       ),
                     )
                   ],
+                ),
+                Align(
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.yellow),
+                        borderRadius: BorderRadius.circular(10)),
+                    minWidth: w / 2 - 40,
+                    color: Colors.yellow,
+                    child: Text(
+                      "Share on Snapchat",
+                      style: TextStyle(color: Palette().bluebg),
+                    ),
+                    onPressed: () async {
+                      String url =
+                          'https://nightsky-api.herokuapp.com/walk_stats/$_steps/$username';
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Webview(url)));
+                    },
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 70),

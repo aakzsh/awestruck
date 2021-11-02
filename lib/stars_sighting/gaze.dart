@@ -3,6 +3,7 @@ import 'package:awestruck/constant_widgets/img_string.dart';
 import 'package:awestruck/constant_widgets/palette.dart';
 import 'package:awestruck/profile/profile.dart';
 import 'package:awestruck/stars_sighting/join_room.dart';
+import 'package:awestruck/webview.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:awestruck/stars_sighting/byte_image.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +133,32 @@ class _GazeState extends State<Gaze> {
                                 width: 200,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[],
+                                  children: <Widget>[
+                                    MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                          side:
+                                              BorderSide(color: Colors.yellow),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      minWidth: w / 2 - 40,
+                                      color: Colors.yellow,
+                                      child: Text(
+                                        "Share on Snapchat",
+                                        style:
+                                            TextStyle(color: Palette().bluebg),
+                                      ),
+                                      onPressed: () async {
+                                        String url =
+                                            'https://nightsky-api.herokuapp.com/share_starmap/$UniversalCode';
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Webview(url)));
+                                      },
+                                    ),
+                                  ],
                                 ),
                               )),
                           SizedBox(
